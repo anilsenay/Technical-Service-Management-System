@@ -3,6 +3,7 @@ var router = express.Router();
 var sql = require("mssql");
 const sqlConfig = require("../config");
 
+// Get all employees.
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
@@ -12,11 +13,12 @@ router.get("/", (req, res) => {
       }
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ users: recordsets.recordset }); // Result in JSON format
+      return res.send({ employees: recordsets.recordset }); // Result in JSON format
     });
   });
 });
 
+// Get employees with given employeeId.
 router.get("/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
@@ -28,12 +30,13 @@ router.get("/:id", (req, res) => {
         }
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.send({ users: recordsets.recordset }); // Result in JSON format
+        return res.send({ employee: recordsets.recordset }); // Result in JSON format
       }
     );
   });
 });
 
+// Get the employee availability with given employeeID.
 router.get("/availability/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
