@@ -20,8 +20,7 @@ router.get("/", (req, res) => {
 });
 
 // Get customer's all repairments information with given firstName, lastName and phoneNumber parameters.
-router.get(encodeURI("/repairments"), (req, res) => {
-  console.log(req.query);
+router.get("/repairments", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("firstName", sql.NVarChar(50), req.query.firstName || "NULL");
@@ -45,6 +44,24 @@ router.get("/:id", (req, res) => {
     var request = new sql.Request();
     request.query(
       "SELECT * FROM CUSTOMER WHERE ID=" + req.params.id,
+      (err, recordsets) => {
+        if (err) {
+          throw err;
+        }
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+        return res.send({ customer: recordsets.recordset }); // Result in JSON format
+      }
+    );
+  });
+});
+
+// Get customer with given id.
+router.get("/:id/address", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.query(
+      "SELECT * FROM ADDRESS WHERE customerID=" + req.params.id,
       (err, recordsets) => {
         if (err) {
           throw err;
