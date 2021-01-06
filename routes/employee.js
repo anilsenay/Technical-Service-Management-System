@@ -18,6 +18,21 @@ router.get("/", (req, res) => {
   });
 });
 
+// Get employee's all repairments information with given id, firstName and lastName parameters.
+router.get("/repairments", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("id", sql.TinyInt, req.query.id || "NULL");
+    request.input("firstName", sql.NVarChar(50), req.query.firstName || "NULL");
+    request.input("lastName", sql.NVarChar(50), req.query.lastName || "NULL");
+    request.execute("sp_getEmployeeRepairments", (err, result) => {
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+      return res.send({ repairments: result.recordsets[0] });
+    });
+  });
+});
+
 // Get employees with given employeeId.
 router.get("/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
