@@ -5,6 +5,7 @@ const sqlConfig = require("./config");
 
 var employees = require("./routes/employee");
 var customers = require("./routes/customer");
+var repairments = require("./routes/repairment");
 
 const PORT = 5000 || process.env.PORT;
 const app = express();
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
 
 app.use("/api/employee", employees);
 app.use("/api/customer", customers);
+app.use("/api/repairment", repairments);
 
 app.listen(PORT, () => {
   console.log("Working on port : " + PORT);
