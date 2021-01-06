@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
       }
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ users: recordsets.recordset }); // Result in JSON format
+      return res.send({ customers: recordsets.recordset }); // Result in JSON format
     });
   });
 });
@@ -31,7 +31,7 @@ router.get("/:id", (req, res) => {
         }
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.send({ users: recordsets.recordset }); // Result in JSON format
+        return res.send({ customer: recordsets.recordset }); // Result in JSON format
       }
     );
   });
