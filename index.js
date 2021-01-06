@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const sqlConfig = require("./config");
 
 var employees = require("./routes/employee");
+var customers = require("./routes/customer");
 
 const PORT = 5000 || process.env.PORT;
 const app = express();
@@ -24,6 +25,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api/employee", employees);
+app.use("/api/customer", customers);
 
 app.listen(PORT, () => {
   console.log("Working on port : " + PORT);
