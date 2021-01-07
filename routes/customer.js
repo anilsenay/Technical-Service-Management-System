@@ -7,13 +7,12 @@ const sqlConfig = require("../config");
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    console.log(sqlConfig);
     request.query("SELECT * FROM CUSTOMER", (err, recordsets) => {
       if (err) {
         console.log(err);
-        if(err.code === "ENOCONN")
-          return res.status(503).send( { error: {err}})
-        return res.status(400).send( { error: {err}})
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
       }
       res.setHeader("Content-Type", "application/json");
       sql.close();
@@ -36,9 +35,9 @@ router.get("/repairments", (req, res) => {
     request.execute("sp_getCustomerRepairments", (err, result) => {
       if (err) {
         console.log(err);
-        if(err.code === "ENOCONN")
-          return res.status(503).send( { error: {err}})
-        return res.status(400).send( { error: {err}})
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
       }
 
       res.setHeader("Content-Type", "application/json");
@@ -50,21 +49,16 @@ router.get("/repairments", (req, res) => {
 
 // Get customer with given id.
 router.get("/:id", (req, res) => {
-  console.log("test1")
   sql.connect(sqlConfig, () => {
-  console.log("tes2")
-
     var request = new sql.Request();
-  console.log("test3")
-
     request.query(
       "SELECT * FROM CUSTOMER WHERE ID=" + req.params.id,
       (err, recordsets) => {
         if (err) {
           console.log(err);
-          if(err.code === "ENOCONN")
-            return res.status(503).send( { error: {err}})
-          return res.status(400).send( { error: {err}})
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
         }
 
         res.setHeader("Content-Type", "application/json");
@@ -84,9 +78,9 @@ router.get("/:id/address", (req, res) => {
       (err, recordsets) => {
         if (err) {
           console.log(err);
-          if(err.code === "ENOCONN")
-            return res.status(503).send( { error: {err}})
-          return res.status(400).send( { error: {err}})
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
         }
         res.setHeader("Content-Type", "application/json");
         sql.close();
