@@ -1,7 +1,7 @@
 var router = require("express").Router();
 
-router.use("/api/customer", require("./customer"));
-router.use("/api/employee", require("./employee"));
-router.use("/api/repairment", require("./repairment"));
+router.use("/api/customers", require("./customer"));
+router.use("/api/employees", require("./employee"));
+router.use("/api/repairments", require("./repairment"));
 
 module.exports = router;
