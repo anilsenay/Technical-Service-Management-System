@@ -9,11 +9,15 @@ router.get("/", (req, res) => {
     var request = new sql.Request();
     request.query("SELECT * FROM REPAIRMENT", (err, recordsets) => {
       if (err) {
-        throw err;
+        console.log(err);
+        if(err.code === "ENOCONN")
+          return res.status(503).send( { error: {err}})
+        return res.status(400).send( { error: {err}})
       }
+
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ repairments: recordsets.recordset }); // Result in JSON format
+      return res.status(200).send({ repairments: recordsets.recordset }); // Result in JSON format
     });
   });
 });
@@ -26,11 +30,15 @@ router.get("/:id", (req, res) => {
       "SELECT * FROM REPAIRMENT WHERE ID=" + req.params.id,
       (err, recordsets) => {
         if (err) {
-          throw err;
+          console.log(err);
+          if(err.code === "ENOCONN")
+            return res.status(503).send( { error: {err}})
+          return res.status(400).send( { error: {err}})
         }
+
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.send({ repairment: recordsets.recordset }); // Result in JSON format
+        return res.status(200).send({ repairment: recordsets.recordset }); // Result in JSON format
       }
     );
   });
@@ -42,9 +50,16 @@ router.get("/info/:id", (req, res) => {
     var request = new sql.Request();
     request.input("id", sql.Int, req.params.id);
     request.execute("sp_getRepairmentInfo", (err, result) => {
+      if (err) {
+        console.log(err);
+        if(err.code === "ENOCONN")
+          return res.status(503).send( { error: {err}})
+        return res.status(400).send( { error: {err}})
+      }
+
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ information: result.recordsets[0] });
+      return res.status(200).send({ information: result.recordsets[0] });
     });
   });
 });
@@ -55,9 +70,16 @@ router.get("/cost/:id", (req, res) => {
     var request = new sql.Request();
     request.input("id", sql.Int, req.params.id);
     request.execute("sp_getRepairmentCost", (err, result) => {
+      if (err) {
+        console.log(err);
+        if(err.code === "ENOCONN")
+          return res.status(503).send( { error: {err}})
+        return res.status(400).send( { error: {err}})
+      }
+
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ cost: result.recordsets[0] });
+      return res.status(200).send({ cost: result.recordsets[0] });
     });
   });
 });

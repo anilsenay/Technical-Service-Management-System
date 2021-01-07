@@ -10,11 +10,14 @@ router.get("/", (req, res) => {
     console.log(sqlConfig);
     request.query("SELECT * FROM CUSTOMER", (err, recordsets) => {
       if (err) {
-        throw err;
+        console.log(err);
+        if(err.code === "ENOCONN")
+          return res.status(503).send( { error: {err}})
+        return res.status(400).send( { error: {err}})
       }
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ customers: recordsets.recordset }); // Result in JSON format
+      return res.status(200).send({ customers: recordsets.recordset }); // Result in JSON format
     });
   });
 });
@@ -31,26 +34,42 @@ router.get("/repairments", (req, res) => {
       "+" + req.query.phoneNumber || "NULL"
     );
     request.execute("sp_getCustomerRepairments", (err, result) => {
+      if (err) {
+        console.log(err);
+        if(err.code === "ENOCONN")
+          return res.status(503).send( { error: {err}})
+        return res.status(400).send( { error: {err}})
+      }
+
       res.setHeader("Content-Type", "application/json");
       sql.close();
-      return res.send({ repairments: result.recordsets[0] });
+      return res.status(200).send({ repairments: result.recordsets[0] });
     });
   });
 });
 
 // Get customer with given id.
 router.get("/:id", (req, res) => {
+  console.log("test1")
   sql.connect(sqlConfig, () => {
+  console.log("tes2")
+
     var request = new sql.Request();
+  console.log("test3")
+
     request.query(
       "SELECT * FROM CUSTOMER WHERE ID=" + req.params.id,
       (err, recordsets) => {
         if (err) {
-          throw err;
+          console.log(err);
+          if(err.code === "ENOCONN")
+            return res.status(503).send( { error: {err}})
+          return res.status(400).send( { error: {err}})
         }
+
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.send({ customer: recordsets.recordset }); // Result in JSON format
+        return res.status(200).send({ customer: recordsets.recordset }); // Result in JSON format
       }
     );
   });
@@ -64,11 +83,14 @@ router.get("/:id/address", (req, res) => {
       "SELECT * FROM ADDRESS WHERE customerID=" + req.params.id,
       (err, recordsets) => {
         if (err) {
-          throw err;
+          console.log(err);
+          if(err.code === "ENOCONN")
+            return res.status(503).send( { error: {err}})
+          return res.status(400).send( { error: {err}})
         }
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.send({ customer: recordsets.recordset }); // Result in JSON format
+        return res.status(200).send({ customer: recordsets.recordset }); // Result in JSON format
       }
     );
   });

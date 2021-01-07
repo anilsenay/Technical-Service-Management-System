@@ -25,9 +25,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/api/employee", employees);
-app.use("/api/customer", customers);
-app.use("/api/repairment", repairments);
+app.use("/", require("./routes")),
 
 app.listen(PORT, () => {
   console.log("Working on port : " + PORT);
