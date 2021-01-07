@@ -1,11 +1,5 @@
-const sql = require("mssql");
 const express = require("express");
 const bodyParser = require("body-parser");
-const sqlConfig = require("./config");
-
-var employees = require("./routes/employee");
-var customers = require("./routes/customer");
-var repairments = require("./routes/repairment");
 
 const PORT = 5000 || process.env.PORT;
 const app = express();
@@ -26,7 +20,6 @@ app.use(function (req, res, next) {
 });
 
 app.use("/", require("./routes")),
-
-app.listen(PORT, () => {
-  console.log("Working on port : " + PORT);
-});
+  app.listen(PORT, () => {
+    console.log("Working on port : " + PORT);
+  });
