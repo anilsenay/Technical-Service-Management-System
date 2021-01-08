@@ -10,9 +10,9 @@ router.get("/", (req, res) => {
     request.query("SELECT * FROM EMPLOYEE", (err, recordsets) => {
       if (err) {
         console.log(err);
-        if(err.code === "ENOCONN")
-          return res.status(503).send( { error: {err}})
-        return res.status(400).send( { error: {err}})
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
       }
 
       res.setHeader("Content-Type", "application/json");
@@ -32,9 +32,9 @@ router.get("/repairments", (req, res) => {
     request.execute("sp_getEmployeeRepairments", (err, result) => {
       if (err) {
         console.log(err);
-        if(err.code === "ENOCONN")
-          return res.status(503).send( { error: {err}})
-        return res.status(400).send( { error: {err}})
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
       }
 
       res.setHeader("Content-Type", "application/json");
@@ -53,9 +53,9 @@ router.get("/:id", (req, res) => {
       (err, recordsets) => {
         if (err) {
           console.log(err);
-          if(err.code === "ENOCONN")
-            return res.status(503).send( { error: {err}})
-          return res.status(400).send( { error: {err}})
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
         }
 
         res.setHeader("Content-Type", "application/json");
@@ -76,9 +76,9 @@ router.get("/availability/:id", (req, res) => {
     request.execute("sp_getEmployeeAvailability", (err, result) => {
       if (err) {
         console.log(err);
-        if(err.code === "ENOCONN")
-          return res.status(503).send( { error: {err}})
-        return res.status(400).send( { error: {err}})
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
       }
 
       res.setHeader("Content-Type", "application/json");
