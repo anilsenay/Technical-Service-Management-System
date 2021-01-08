@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import Link from "next/link";
 
 import * as yup from "yup";
-import { Formik, Form, Field, useFormik } from "formik";
-import md5 from "md5";
+import { useFormik } from "formik";
+
+import { useRouter } from "next/router";
 
 import globalHook from "../../hooks/global.hook";
 
@@ -26,27 +27,13 @@ export default function LoginForm() {
   const { user } = useGlobalState();
   const loginError = useGlobalState()?.errors?.user;
 
-  const loginSubmit = ({ username, password }) => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password: md5(password) }),
-    };
-    fetch("http://localhost:5000/api/login", requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
+  const router = useRouter();
 
-        if (!response.ok) {
-          const error = (data && data.error) || response.status;
-          throw new Error(data.error);
-        }
-        setLoginError(null);
-        console.log(data);
-      })
-      .catch((error) => {
-        setLoginError(error.toString());
-      });
-  };
+  useEffect(() => {
+    if (user) {
+      typeof window !== "undefined" && router.push("/dashboard");
+    }
+  }, [user]);
 
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
@@ -55,10 +42,10 @@ export default function LoginForm() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      //loginSubmit(values);
       setLoggedUser(values);
     },
   });
+
   return (
     <form onSubmit={handleSubmit}>
       <Input
