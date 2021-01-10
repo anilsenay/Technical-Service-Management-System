@@ -44,6 +44,25 @@ router.get("/repairments", (req, res) => {
   });
 });
 
+// Get average repairment duration per employee.
+router.get("/repairments/durations", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.execute("sp_getAvgRepairmentDurationPerEmployee", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+      return res.status(200).send({ durations: result.recordsets[0] });
+    });
+  });
+});
+
 // Get employees with given employeeId.
 router.get("/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
@@ -84,6 +103,72 @@ router.get("/availability/:id", (req, res) => {
       res.setHeader("Content-Type", "application/json");
       sql.close();
       return res.status(200).send({ availibilities: result.recordsets[0] });
+    });
+  });
+});
+
+// Update the employee's password.
+router.put("/updatePassword", (req, res) => {
+  var username = req.body.username;
+  var oldPassword = req.body.oldPassword;
+  var newPassword = req.body.newCustomer;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("username", sql.NVarChar(30), username || "NULL");
+    request.input("oldPassword", sql.NVarChar(32), oldPassword || "NULL");
+    request.input("newPassword", sql.NVarChar(32), newPassword || "NULL");
+    request.execute("sp_updatePassword", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ newPassword: { ...req.body } });
+    });
+  });
+});
+
+// Insert a new employee.
+router.post("/insert", (req, res) => {
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var phoneNumber = req.body.phoneNumber;
+  var username = req.body.username;
+  var password = req.body.password;
+  var email = req.body.email;
+  var address = req.body.address;
+  var dateOfBirth = req.body.dateOfBirth;
+  var startDate = req.body.startDate;
+  var type = req.body.type;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
+    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
+    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || "NULL");
+    request.input("username", sql.NVarChar(30), username || "NULL");
+    request.input("password", sql.NVarChar(32), password || "NULL");
+    request.input("email", sql.NVarChar(100), email || "NULL");
+    request.input("address", sql.NVarChar(150), address || "NULL");
+    request.input("dateOfBirth", sql.Date, dateOfBirth || "NULL");
+    request.input("startDate", sql.Date, startDate || "NULL");
+    request.input("type", sql.NVarChar(32), type || "NULL");
+    request.execute("sp_insertNewEmployee", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ newEmployee: { ...req.body } });
     });
   });
 });
