@@ -26,7 +26,7 @@ router.delete("/delete/:orderID", (req, res) => {
   var orderID = req.params.orderID;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("orderID", sql.Int, orderID || "NULL");
+    request.input("orderID", sql.Int, orderID || null);
     request.execute("sp_deleteWrongOrder", (err, result) => {
       if (err) {
         console.log(err);
@@ -69,8 +69,8 @@ router.post("/insert", (req, res) => {
 
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("employeeID", sql.TinyInt, employeeID || "NULL");
-    request.input("partID_1", sql.BigInt, partID_1 || "NULL");
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("partID_1", sql.BigInt, partID_1 || null);
     request.input(
       "partID_1_quantity",
       sql.SmallInt,
