@@ -28,12 +28,15 @@ export default function SideBar() {
         >
           <SideBarItem.SubItem
             text="Create Repairment"
-            link="create-repairment"
+            link="/repairments/create-repairment"
           />
-          <SideBarItem.SubItem text="List Repairments" link="list-repairment" />
+          <SideBarItem.SubItem
+            text="List Repairments"
+            link="/repairments/list-repairments"
+          />
           <SideBarItem.SubItem
             text="Assigned Repairment"
-            link="assigned-repairment"
+            link="/repairments/assigned-repairments"
           />
         </SideBarItem>
       </section>
@@ -44,10 +47,10 @@ export default function SideBar() {
           link={"/storage"}
           isActive={false}
         >
-          <SideBarItem.SubItem text="New Order" link="new-order" />
-          <SideBarItem.SubItem text="List Orders" link="list-orders" />
-          <SideBarItem.SubItem text="Add New Part" link="add-part" />
-          <SideBarItem.SubItem text="List Parts" link="list-parts" />
+          <SideBarItem.SubItem text="New Order" link="/storage/new-order" />
+          <SideBarItem.SubItem text="List Orders" link="/storage/list-orders" />
+          <SideBarItem.SubItem text="Add New Part" link="/storage/add-part" />
+          <SideBarItem.SubItem text="List Parts" link="/storage/list-parts" />
         </SideBarItem>
       </section>
       <section className={styles.itemContainer}>
@@ -59,11 +62,17 @@ export default function SideBar() {
         >
           <SideBarItem.SubItem
             text="Register Employee"
-            link="register-employee"
+            link="/employees/register-employee"
           />
-          <SideBarItem.SubItem text="List Employees" link="list-employees" />
-          <SideBarItem.SubItem text="Add New Part" link="add-part" />
-          <SideBarItem.SubItem text="Employee Stats" link="employee-stats" />
+          <SideBarItem.SubItem
+            text="List Employees"
+            link="/employees/list-employees"
+          />
+          <SideBarItem.SubItem text="Add New Part" link="/employees/add-part" />
+          <SideBarItem.SubItem
+            text="Employee Stats"
+            link="/employees/employee-stats"
+          />
         </SideBarItem>
       </section>
       <section className={styles.itemContainer}>
@@ -73,8 +82,14 @@ export default function SideBar() {
           link={"/payments"}
           isActive={false}
         >
-          <SideBarItem.SubItem text="New Payment" link="new-payment" />
-          <SideBarItem.SubItem text="List Payments" link="list-payments" />
+          <SideBarItem.SubItem
+            text="New Payment"
+            link="/payments/new-payment"
+          />
+          <SideBarItem.SubItem
+            text="List Payments"
+            link="/payments/list-payments"
+          />
         </SideBarItem>
       </section>
     </aside>

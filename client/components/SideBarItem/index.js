@@ -9,7 +9,6 @@ import Link from "next/link";
 export default function SideBarItem({ icon, text, link, isActive, children }) {
   const [toggleMenu, setToggleMenu] = useState(false);
 
-  console.log(children?.length > 0);
   return (
     <>
       <div
