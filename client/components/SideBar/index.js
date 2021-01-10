@@ -26,26 +26,56 @@ export default function SideBar() {
           link={"/repairments"}
           isActive={false}
         >
-          <SideBarItem.SubItem text="New Repairment" />
-          <SideBarItem.SubItem text="New Repairment" />
-          <SideBarItem.SubItem text="New Repairment" />
+          <SideBarItem.SubItem
+            text="Create Repairment"
+            link="create-repairment"
+          />
+          <SideBarItem.SubItem text="List Repairments" link="list-repairment" />
+          <SideBarItem.SubItem
+            text="Assigned Repairment"
+            link="assigned-repairment"
+          />
         </SideBarItem>
       </section>
       <section className={styles.itemContainer}>
         <SideBarItem
-          icon={null}
-          text={"Repairments"}
-          link={"/repairments"}
+          icon={"storage"}
+          text={"Storage"}
+          link={"/storage"}
           isActive={false}
-        />
+        >
+          <SideBarItem.SubItem text="New Order" link="new-order" />
+          <SideBarItem.SubItem text="List Orders" link="list-orders" />
+          <SideBarItem.SubItem text="Add New Part" link="add-part" />
+          <SideBarItem.SubItem text="List Parts" link="list-parts" />
+        </SideBarItem>
       </section>
       <section className={styles.itemContainer}>
         <SideBarItem
-          icon={null}
-          text={"Repairments"}
-          link={"/repairments"}
+          icon={"man"}
+          text={"Employees"}
+          link={"/employees"}
           isActive={false}
-        />
+        >
+          <SideBarItem.SubItem
+            text="Register Employee"
+            link="register-employee"
+          />
+          <SideBarItem.SubItem text="List Employees" link="list-employees" />
+          <SideBarItem.SubItem text="Add New Part" link="add-part" />
+          <SideBarItem.SubItem text="Employee Stats" link="employee-stats" />
+        </SideBarItem>
+      </section>
+      <section className={styles.itemContainer}>
+        <SideBarItem
+          icon={"payment"}
+          text={"Payments"}
+          link={"/payments"}
+          isActive={false}
+        >
+          <SideBarItem.SubItem text="New Payment" link="new-payment" />
+          <SideBarItem.SubItem text="List Payments" link="list-payments" />
+        </SideBarItem>
       </section>
     </aside>
   );
