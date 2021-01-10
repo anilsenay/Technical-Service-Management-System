@@ -78,7 +78,83 @@ router.post("/insert", (req, res) => {
       res.setHeader("Content-Type", "application/json");
       sql.close();
 
-      return res.status(200).send({ insertion: { ...req.body } });
+      return res.status(200).send({ newCustomer: { ...req.body } });
+    });
+  });
+});
+
+// Update the customer information.
+router.put("/update", (req, res) => {
+  var id = req.body.id;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var phoneNumber = req.body.phoneNumber;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("id", sql.Int, id || "NULL");
+    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
+    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
+    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || "NULL");
+    request.execute("sp_updateCustomer", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ updatedCustomer: { ...req.body } });
+    });
+  });
+});
+
+// Delete the customer.
+router.delete("/delete", (req, res) => {
+  var id = req.body.id;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("id", sql.Int, id || "NULL");
+    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
+    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
+    request.execute("sp_deleteCustomer", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ deletedCustomer: { ...req.body } });
+    });
+  });
+});
+
+// Delete the customer address.
+router.delete("/deleteAdress/:id", (req, res) => {
+  var id = req.params.id;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("id", sql.Int, id || "NULL");
+    request.execute("sp_deleteAddress", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ deletedAddress: { ...req.body } });
     });
   });
 });
@@ -120,7 +196,7 @@ router.get("/:id/address", (req, res) => {
         }
         res.setHeader("Content-Type", "application/json");
         sql.close();
-        return res.status(200).send({ customer: recordsets.recordset }); // Result in JSON format
+        return res.status(200).send({ customerAddress: recordsets.recordset }); // Result in JSON format
       }
     );
   });
