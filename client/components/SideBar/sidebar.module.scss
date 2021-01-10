@@ -1,10 +1,12 @@
+@import "../../styles/colors.scss";
+
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 100vh;
   min-width: 300px;
-  background-color: #f1f5fe;
+  background-color: $sidebar-purple;
   border-right: 1px solid #eee;
 
   .logo {

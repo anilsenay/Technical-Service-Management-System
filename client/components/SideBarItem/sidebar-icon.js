@@ -9,6 +9,7 @@ export default function SidebarIcon({ icon, isActive }) {
         width={20}
         height={20}
         fill={isActive ? "#7F7FFB" : "#94969C"}
+        stroke={isActive ? "#7F7FFB" : "#94969C"}
       />
     );
   else if (icon === "repairment")

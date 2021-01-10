@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import "../../styles/colors.scss";
 
 .container {
   display: flex;
@@ -15,16 +16,19 @@
     font-family: "Montserrat", sans-serif;
   }
   .activeText {
-    color: "#001847";
+    color: $dark-blue;
     font-weight: bold;
   }
 
   .arrow_down {
     margin-left: auto;
-    margin-right: 32px;
+    margin-right: 24px;
     transform: rotateX(0deg);
     transition: transform 0.2s linear;
     padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
   }
   .arrow_up {
     margin-left: auto;
@@ -34,6 +38,7 @@
     padding: 4px;
     padding-left: 10px;
     padding-right: 10px;
+    cursor: pointer;
   }
 }
 
