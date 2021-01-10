@@ -25,7 +25,11 @@ export default function SideBar() {
           text={"Repairments"}
           link={"/repairments"}
           isActive={false}
-        />
+        >
+          <SideBarItem.SubItem text="New Repairment" />
+          <SideBarItem.SubItem text="New Repairment" />
+          <SideBarItem.SubItem text="New Repairment" />
+        </SideBarItem>
       </section>
       <section className={styles.itemContainer}>
         <SideBarItem

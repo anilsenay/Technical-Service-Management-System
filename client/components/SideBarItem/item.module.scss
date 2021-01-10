@@ -8,7 +8,6 @@
   padding-bottom: 20px;
   padding-left: 60px;
   margin-top: 6px;
-  margin-bottom: 6px;
 
   .text {
     font-size: 16px;
@@ -18,5 +17,56 @@
   .activeText {
     color: "#001847";
     font-weight: bold;
+  }
+
+  .arrow_down {
+    margin-left: auto;
+    margin-right: 32px;
+    transform: rotateX(0deg);
+    transition: transform 0.2s linear;
+    padding: 4px;
+  }
+  .arrow_up {
+    margin-left: auto;
+    margin-right: 24px;
+    transform: rotateX(180deg);
+    transition: transform 0.2s linear;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.subItemContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 98px;
+
+  .text {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+  }
+}
+
+.listElement {
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation: fade #{$i * 0.1}s linear;
+    }
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 1;
   }
 }
