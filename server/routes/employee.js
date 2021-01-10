@@ -111,7 +111,7 @@ router.get("/availability/:id", (req, res) => {
 router.put("/updatePassword", (req, res) => {
   var username = req.body.username;
   var oldPassword = req.body.oldPassword;
-  var newPassword = req.body.newCustomer;
+  var newPassword = req.body.newPassword;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("username", sql.NVarChar(30), username || "NULL");
@@ -128,7 +128,37 @@ router.put("/updatePassword", (req, res) => {
       res.setHeader("Content-Type", "application/json");
       sql.close();
 
-      return res.status(200).send({ newPassword: { ...req.body } });
+      return res.status(200).send({ newPassword: result.recordsets });
+    });
+  });
+});
+
+// Update the employee's information.
+router.put("/update", (req, res) => {
+  var username = req.body.username;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var email = req.body.email;
+  var phoneNumber = req.body.phoneNumber;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("username", sql.NVarChar(30), username || "NULL");
+    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
+    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
+    request.input("email", sql.NVarChar(100), email || "NULL");
+    request.input("phoneNumber", sql.NVarChar(50), phoneNumber || "NULL");
+    request.execute("sp_updateEmployee", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ updatedEmployee: { ...req.body } });
     });
   });
 });
