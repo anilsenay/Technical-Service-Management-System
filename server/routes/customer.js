@@ -91,7 +91,7 @@ router.put("/update", (req, res) => {
   var phoneNumber = req.body.phoneNumber;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("id", sql.Int, id || "NULL");
+    request.input("id", sql.Int, id || null);
     request.input("firstName", sql.NVarChar(50), firstName || "NULL");
     request.input("lastName", sql.NVarChar(50), lastName || "NULL");
     request.input("phoneNumber", sql.NVarChar(20), phoneNumber || "NULL");
@@ -118,7 +118,7 @@ router.delete("/delete", (req, res) => {
   var lastName = req.body.lastName;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("id", sql.Int, id || "NULL");
+    request.input("id", sql.Int, id || null);
     request.input("firstName", sql.NVarChar(50), firstName || "NULL");
     request.input("lastName", sql.NVarChar(50), lastName || "NULL");
     request.execute("sp_deleteCustomer", (err, result) => {
@@ -142,7 +142,7 @@ router.delete("/deleteAdress/:id", (req, res) => {
   var id = req.params.id;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("id", sql.Int, id || "NULL");
+    request.input("id", sql.Int, id || null);
     request.execute("sp_deleteAddress", (err, result) => {
       if (err) {
         console.log(err);
