@@ -5,6 +5,7 @@ import {
   ManIcon,
   PaymentIcon,
   RepairmentIcon,
+  SettingsIcon,
   StorageIcon,
 } from "../Icons";
 
@@ -47,6 +48,14 @@ export default function SidebarIcon({ icon, isActive }) {
   else if (icon === "payment")
     return (
       <PaymentIcon
+        width={20}
+        height={20}
+        fill={isActive ? "#7F7FFB" : "#94969C"}
+      />
+    );
+  else if (icon === "settings")
+    return (
+      <SettingsIcon
         width={20}
         height={20}
         fill={isActive ? "#7F7FFB" : "#94969C"}

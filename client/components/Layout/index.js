@@ -5,12 +5,12 @@ import SideBar from "../SideBar";
 
 import styles from "./layout.module.scss";
 
-export default function Layout({ children }) {
+export default function Layout({ title, children }) {
   return (
     <div className={styles.container}>
       <SideBar />
       <div className={styles.content}>
-        <Header />
+        <Header title={title} />
         {children}
       </div>
     </div>

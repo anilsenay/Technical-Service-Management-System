@@ -118,6 +118,14 @@ export default function SideBar() {
           />
         </SideBarItem>
       </section>
+      <section className={styles.itemContainer}>
+        <SideBarItem
+          icon={"settings"}
+          text={"Settings"}
+          link={"/settings"}
+          isActive={router?.pathname.includes("settings")}
+        />
+      </section>
     </aside>
   );
 }
