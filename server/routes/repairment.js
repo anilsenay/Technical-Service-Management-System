@@ -22,6 +22,24 @@ router.get("/", (req, res) => {
   });
 });
 
+// Get paid repairments.
+router.get("/paid", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.execute("sp_getPaidRepairments", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+      return res.status(200).send({ paidRepairments: result.recordsets[0] });
+    });
+  });
+});
+
 // Get employees with given employeeId.
 router.get("/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
