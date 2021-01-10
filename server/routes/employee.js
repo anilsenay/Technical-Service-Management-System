@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 router.get("/repairments", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("id", sql.TinyInt, req.query.id || "NULL");
+    request.input("id", sql.TinyInt, req.query.id || null);
     request.input("firstName", sql.NVarChar(50), req.query.firstName || "NULL");
     request.input("lastName", sql.NVarChar(50), req.query.lastName || "NULL");
     request.execute("sp_getEmployeeRepairments", (err, result) => {
