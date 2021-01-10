@@ -1,11 +1,10 @@
 import React from "react";
-
 import Layout from "../../components/Layout";
 
-export default function Repairments() {
+export default function Settings() {
   return (
     <Layout>
-      <div>Repairments Root</div>
+      <div></div>
     </Layout>
   );
 }

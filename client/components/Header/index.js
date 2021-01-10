@@ -1,17 +1,25 @@
 import React from "react";
+import { useRouter } from "next/router";
+
 import { NotificationIcon, SettingsIcon } from "../Icons";
 
 import styles from "./header.module.scss";
 
 import globalHook from "../../hooks/global.hook";
 
+import { titles } from "../../consts/pageTitles";
+
 export default function Header() {
+  const router = useRouter();
+
   const { useGlobalState } = globalHook();
   const { user } = useGlobalState();
   return (
     <div className={styles.container}>
       <div className={styles.titleContent}>
-        <span className={styles.pageTitle}>Dashboard</span>
+        <span className={styles.pageTitle}>
+          {titles[router?.pathname] || "Dashboard"}
+        </span>
       </div>
       <div className={styles.profileContent}>
         <div className={styles.icon}>
