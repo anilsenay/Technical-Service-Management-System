@@ -1,14 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import "../../styles/colors.scss";
 
 .container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 60px;
   margin-top: 6px;
-  margin-bottom: 6px;
+  cursor: pointer;
+  z-index: 0;
 
   .text {
     font-size: 16px;
@@ -16,7 +15,78 @@
     font-family: "Montserrat", sans-serif;
   }
   .activeText {
-    color: "#001847";
+    color: $dark-blue;
     font-weight: bold;
+  }
+
+  .linkContainer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .arrow_down {
+    margin-left: auto;
+    margin-right: 24px;
+    transform: rotateX(0deg);
+    transition: transform 0.2s linear;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    z-index: 100;
+  }
+  .arrow_up {
+    margin-left: auto;
+    margin-right: 24px;
+    transform: rotateX(180deg);
+    transition: transform 0.2s linear;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    z-index: 100;
+  }
+}
+
+.subItemContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 98px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $purple;
+  }
+
+  .text {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+  }
+}
+
+.listElement {
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation: fade #{$i * 0.1}s linear;
+    }
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 1;
   }
 }
