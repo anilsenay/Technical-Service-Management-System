@@ -3,12 +3,12 @@ var router = express.Router();
 var sql = require("mssql");
 const sqlConfig = require("../../config");
 
-// Get all information from storage.
+// Get all detailed information from repairments .
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.query(
-      `SELECT * from view_getDetailedRepairment`,
+      `SELECT * from view_getDetailedRepairments`,
       (err, recordsets) => {
         if (err) {
           console.log(err);
@@ -65,7 +65,7 @@ router.get("/", (req, res) => {
             },
           };
         });
-        return res.status(200).send({ repairments: allJson }); // Result in JSON format
+        return res.status(200).send({ detailedRepairments: allJson }); // Result in JSON format
       }
     );
   });
