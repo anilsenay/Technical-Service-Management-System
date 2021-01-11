@@ -23,10 +23,10 @@ router.get("/", (req, res) => {
 
 // Delete the order.
 router.delete("/delete/:orderID", (req, res) => {
-  var orderID = req.body.orderID;
+  var orderID = req.params.orderID;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("orderID", sql.Int, orderID || "NULL");
+    request.input("orderID", sql.Int, orderID || null);
     request.execute("sp_deleteWrongOrder", (err, result) => {
       if (err) {
         console.log(err);
@@ -38,7 +38,7 @@ router.delete("/delete/:orderID", (req, res) => {
       res.setHeader("Content-Type", "application/json");
       sql.close();
 
-      return res.status(200).send({ deletedOrder: { ...req.body } });
+      return res.status(200).send({ deletedOrder: { ...req.params } });
     });
   });
 });
@@ -69,68 +69,36 @@ router.post("/insert", (req, res) => {
 
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("employeeID", sql.TinyInt, employeeID || "NULL");
-    request.input("partID_1", sql.BigInt, partID_1 || "NULL");
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("partID_1", sql.BigInt, partID_1 || null);
     request.input(
       "partID_1_quantity",
       sql.SmallInt,
       partID_1_quantity || "NULL"
     );
-    request.input("partID_2", sql.BigInt, partID_2 || "NULL");
-    request.input(
-      "partID_2_quantity",
-      sql.SmallInt,
-      partID_2_quantity || "NULL"
-    );
-    request.input("partID_3", sql.BigInt, partID_3 || "NULL");
-    request.input(
-      "partID_3_quantity",
-      sql.SmallInt,
-      partID_3_quantity || "NULL"
-    );
-    request.input("partID_4", sql.BigInt, partID_4 || "NULL");
-    request.input(
-      "partID_4_quantity",
-      sql.SmallInt,
-      partID_4_quantity || "NULL"
-    );
-    request.input("partID_5", sql.BigInt, partID_5 || "NULL");
-    request.input(
-      "partID_5_quantity",
-      sql.SmallInt,
-      partID_5_quantity || "NULL"
-    );
-    request.input("partID_6", sql.BigInt, partID_6 || "NULL");
-    request.input(
-      "partID_6_quantity",
-      sql.SmallInt,
-      partID_6_quantity || "NULL"
-    );
-    request.input("partID_7", sql.BigInt, partID_7 || "NULL");
-    request.input(
-      "partID_7_quantity",
-      sql.SmallInt,
-      partID_7_quantity || "NULL"
-    );
-    request.input("partID_8", sql.BigInt, partID_8 || "NULL");
-    request.input(
-      "partID_8_quantity",
-      sql.SmallInt,
-      partID_8_quantity || "NULL"
-    );
-    request.input("partID_9", sql.BigInt, partID_9 || "NULL");
-    request.input(
-      "partID_9_quantity",
-      sql.SmallInt,
-      partID_9_quantity || "NULL"
-    );
-    request.input("partID_10", sql.BigInt, partID_10 || "NULL");
+    request.input("partID_2", sql.BigInt, partID_2 || null);
+    request.input("partID_2_quantity", sql.SmallInt, partID_2_quantity || null);
+    request.input("partID_3", sql.BigInt, partID_3 || null);
+    request.input("partID_3_quantity", sql.SmallInt, partID_3_quantity || null);
+    request.input("partID_4", sql.BigInt, partID_4 || null);
+    request.input("partID_4_quantity", sql.SmallInt, partID_4_quantity || null);
+    request.input("partID_5", sql.BigInt, partID_5 || null);
+    request.input("partID_5_quantity", sql.SmallInt, partID_5_quantity || null);
+    request.input("partID_6", sql.BigInt, partID_6 || null);
+    request.input("partID_6_quantity", sql.SmallInt, partID_6_quantity || null);
+    request.input("partID_7", sql.BigInt, partID_7 || null);
+    request.input("partID_7_quantity", sql.SmallInt, partID_7_quantity || null);
+    request.input("partID_8", sql.BigInt, partID_8 || null);
+    request.input("partID_8_quantity", sql.SmallInt, partID_8_quantity || null);
+    request.input("partID_9", sql.BigInt, partID_9 || null);
+    request.input("partID_9_quantity", sql.SmallInt, partID_9_quantity || null);
+    request.input("partID_10", sql.BigInt, partID_10 || null);
     request.input(
       "partID_10_quantity",
       sql.SmallInt,
-      partID_10_quantity || "NULL"
+      partID_10_quantity || null
     );
-    request.execute("sp_insertNewEmployee", (err, result) => {
+    request.execute("sp_insertNewOrder", (err, result) => {
       if (err) {
         console.log(err);
         if (err.code === "ENOCONN")

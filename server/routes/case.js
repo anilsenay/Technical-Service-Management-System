@@ -31,9 +31,9 @@ router.post("/insert", (req, res) => {
 
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("caseType", sql.TinyInt, caseType || "NULL");
-    request.input("caseCategory", sql.TinyInt, caseCategory || "NULL");
-    request.input("caseSpec", sql.TinyInt, caseSpec || "NULL");
+    request.input("caseType", sql.TinyInt, caseType || null);
+    request.input("caseCategory", sql.TinyInt, caseCategory || null);
+    request.input("caseSpec", sql.TinyInt, caseSpec || null);
     request.input("caseDesc", sql.NVarChar(100), caseDesc || "NULL");
     request.execute("sp_insertNewCase", (err, result) => {
       if (err) {

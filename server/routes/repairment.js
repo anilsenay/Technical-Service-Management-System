@@ -3,7 +3,7 @@ var router = express.Router();
 var sql = require("mssql");
 const sqlConfig = require("../config");
 
-// Get all employees.
+// Get all repairments.
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
@@ -40,7 +40,7 @@ router.get("/paid", (req, res) => {
   });
 });
 
-// Get employees with given employeeId.
+// Get repairments with given repairmentID.
 router.get("/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
@@ -113,13 +113,13 @@ router.post("/insert", (req, res) => {
   var value = req.body.value;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("deviceID", sql.BigInt, deviceID || "NULL");
-    request.input("caseID", sql.Int, caseID || "NULL");
-    request.input("customerID", sql.Int, customerID || "NULL");
-    request.input("employeeID", sql.TinyInt, employeeID || "NULL");
-    request.input("isInWarranty", sql.Bit, isInWarranty || "NULL");
+    request.input("deviceID", sql.BigInt, deviceID || null);
+    request.input("caseID", sql.Int, caseID || null);
+    request.input("customerID", sql.Int, customerID || null);
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("isInWarranty", sql.Bit, isInWarranty || null);
     request.input("remark", sql.NVarChar(100), remark || "NULL");
-    request.input("value", sql.TinyInt, value || "NULL");
+    request.input("value", sql.TinyInt, value || null);
     request.execute("sp_insertNewRepairment", (err, result) => {
       if (err) {
         console.log(err);
