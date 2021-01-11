@@ -40,7 +40,7 @@ export default function SideBar() {
             isActive={router?.pathname.includes("list-repairments")}
           />
           <SideBarItem.SubItem
-            text="Assigned Repairment"
+            text="Assigned Repairments"
             link="/repairments/assigned-repairments"
             isActive={router?.pathname.includes("assigned-repairments")}
           />
