@@ -43,6 +43,45 @@ router.delete("/delete/:orderID", (req, res) => {
   });
 });
 
+router.get("/getDetailedOrder/:orderID", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("orderID", sql.Int, req.params.orderID);
+    request.execute(`sp_getDetailedOrder`, (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+      const item = result.recordsets[0][0];
+      const allJson = {
+        orderID: item.orderID,
+        totalCost: item.totalCost,
+        orderDate: item.orderDate,
+        isConfirmed: item.isConfirmed,
+        isInWarranty: item.isInWarranty,
+        employee: {
+          employeeID: item.ID,
+          firstName: item.firstName,
+          lastName: item.lastName,
+          username: item.username,
+          email: item.email,
+          isManager: item.isManager,
+          isSmartService: item.isSmartService,
+          isTechnician: item.isTechnician,
+          isStorageMan: item.isStorageMan,
+          isTester: item.isTester,
+          isAccountant: item.isAccountant,
+        },
+      };
+      return res.status(200).send({ detailedOrder: allJson }); // Result in JSON format
+    });
+  });
+});
 // Insert a new order.
 router.post("/insert", (req, res) => {
   var employeeID = req.body.employeeID;
