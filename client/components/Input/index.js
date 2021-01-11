@@ -7,6 +7,7 @@ export default function Input({
   required = true,
   error,
   noMargin,
+  border,
   ...props
 }) {
   const [focus, setFocus] = useState(false);
@@ -17,6 +18,8 @@ export default function Input({
         borderColor: error && "red",
         backgroundColor: focus && "white",
         margin: noMargin && 0,
+        borderColor: border && "#d6d3d3",
+        borderWidth: border && 2,
       }}
       onChange={onChange}
       onFocus={() => setFocus(true)}

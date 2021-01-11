@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import styles from "./item.module.scss";
 
@@ -8,7 +9,11 @@ import Link from "next/link";
 
 export default function SideBarItem({ icon, text, link, isActive, children }) {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const router = useRouter();
 
+  useEffect(() => {
+    router?.pathname.includes(link) && setToggleMenu(true);
+  }, []);
   return (
     <>
       <div
@@ -55,7 +60,11 @@ export default function SideBarItem({ icon, text, link, isActive, children }) {
       {toggleMenu &&
         (children?.length > 0 ? (
           children.map((item) => {
-            return <div className={styles.listElement}>{item}</div>;
+            return (
+              <div key={item.text} className={styles.listElement}>
+                {item}
+              </div>
+            );
           })
         ) : (
           <div className={styles.listElement}>{children}</div>
