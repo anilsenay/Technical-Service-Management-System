@@ -39,12 +39,12 @@ router.get("/paid", (req, res) => {
     });
   });
 });
-// Get paid repairments.
-router.get("/getDetailedRepairments/:id", (req, res) => {
+// Get detailed repairments.
+router.get("/getDetailedRepairment/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("id", sql.Int, req.params.id);
-    request.execute("sp_getDetailedRepairments", (err, result) => {
+    request.execute("sp_getDetailedRepairment", (err, result) => {
       if (err) {
         console.log(err);
         if (err.code === "ENOCONN")
