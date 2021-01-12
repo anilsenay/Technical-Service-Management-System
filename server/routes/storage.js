@@ -7,18 +7,34 @@ const sqlConfig = require("../config");
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.query("SELECT * FROM STORAGE", (err, recordsets) => {
-      if (err) {
-        console.log(err);
-        if (err.code === "ENOCONN")
-          return res.status(503).send({ error: { err } });
-        return res.status(400).send({ error: { err } });
-      }
+    request.query(
+      "SELECT * FROM STORAGE s inner join PART p on s.partID=p.ID",
+      (err, recordsets) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
 
-      res.setHeader("Content-Type", "application/json");
-      sql.close();
-      return res.status(200).send({ storage: recordsets.recordset }); // Result in JSON format
-    });
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+        const allJson = recordsets.recordset.map((item) => {
+          return {
+            part: {
+              partID: item.partID,
+              partName: item.partName,
+              partModel: item.partModel,
+              partColor: item.partColor,
+              price: item.price,
+            },
+            quantity: item.quantity,
+            boxNumber: item.boxNumber,
+          };
+        });
+        return res.status(200).send({ storage: allJson }); // Result in JSON format
+      }
+    );
   });
 });
 
@@ -52,6 +68,28 @@ router.post("/insertNewPart", (req, res) => {
       sql.close();
 
       return res.status(200).send({ newPart: { ...req.body } });
+    });
+  });
+});
+
+// Delete the selected part from storage.
+router.delete("/delete/:partID", (req, res) => {
+  var partID = req.params.partID;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("partID", sql.BigInt, partID || null);
+    request.execute("sp_deletePartFromStorage", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ deletedPart: { ...req.params } });
     });
   });
 });
