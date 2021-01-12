@@ -204,6 +204,7 @@ router.post("/insert", (req, res) => {
   var isInWarranty = req.body.isInWarranty;
   var remark = req.body.remark;
   var value = req.body.value;
+  var isTech = req.body.isTech;
   //Customer Device
   var deviceID = req.body.deviceID;
   var customerId = req.body.customerId;
@@ -231,9 +232,10 @@ router.post("/insert", (req, res) => {
     var request = new sql.Request();
     request.input("caseID", sql.Int, caseID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
-    request.input("isInWarranty", sql.Bit, isInWarranty || null);
+    request.input("isInWarranty", sql.Bit, isInWarranty);
     request.input("remark", sql.NVarChar(100), remark || "NULL");
     request.input("value", sql.TinyInt, value || null);
+    request.input("isTech", sql.Bit, isTech || null);
     //Customer Device
     request.input("deviceID", sql.BigInt, deviceID || null);
     request.input("customerId", sql.Int, customerId || null);
@@ -242,7 +244,7 @@ router.post("/insert", (req, res) => {
     request.input("serialCode", sql.NVarChar(15), serialCode || "NULL");
     request.input("warrantyDueDate", sql.Date, warrantyDueDate || null);
     request.input(
-      "pyhsicalCondition",
+      "physicalCondition",
       sql.NVarChar(100),
       physicalCondition || "NULL"
     );
@@ -255,11 +257,12 @@ router.post("/insert", (req, res) => {
     request.input("streetNumber", sql.NVarChar(50), streetNumber || "NULL");
     request.input("city", sql.NVarChar(50), city || "NULL");
     request.input("county", sql.NVarChar(50), county || "NULL");
+    request.input("zipcode", sql.NVarChar(10), zipcode || "NULL");
     //Case
     request.input("caseType", sql.TinyInt, caseType || null);
     request.input("caseCategory", sql.TinyInt, caseCategory || null);
     request.input("caseSpec", sql.TinyInt, caseSpec || null);
-    request.input("caseDesc", sql.TinyInt, caseDesc || null);
+    request.input("caseDesc", sql.NVarChar(100), caseDesc || null);
     request.execute("sp_insertNewRepairment", (err, result) => {
       if (err) {
         console.log(err);
@@ -271,7 +274,7 @@ router.post("/insert", (req, res) => {
       res.setHeader("Content-Type", "application/json");
       sql.close();
 
-      return res.status(200).send({ repairment: { ...req.body } });
+      return res.status(200).send({ newRepairment: { ...req.body } });
     });
   });
 });
