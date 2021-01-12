@@ -112,15 +112,11 @@ router.put("/update", (req, res) => {
 });
 
 // Delete the customer.
-router.delete("/delete", (req, res) => {
-  var id = req.body.id;
-  var firstName = req.body.firstName;
-  var lastName = req.body.lastName;
+router.delete("/delete/:customerID", (req, res) => {
+  var customerID = req.params.customerID;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("id", sql.Int, id || null);
-    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
-    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
+    request.input("customerID", sql.Int, customerID || null);
     request.execute("sp_deleteCustomer", (err, result) => {
       if (err) {
         console.log(err);
@@ -131,8 +127,7 @@ router.delete("/delete", (req, res) => {
 
       res.setHeader("Content-Type", "application/json");
       sql.close();
-
-      return res.status(200).send({ deletedCustomer: { ...req.body } });
+      return res.status(200).send({ deletedCustomer: req.params.customerID });
     });
   });
 });
