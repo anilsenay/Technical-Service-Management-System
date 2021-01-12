@@ -133,6 +133,7 @@ router.put("/update", (req, res) => {
   var remark = req.body.remark;
   var partIDNeedChange = req.body.partIDNeedChange;
   var value = req.body.value;
+  var isPartWaited = req.body.isPartWaited;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("repairmentID", sql.Int, repairmentID || null);
@@ -141,6 +142,7 @@ router.put("/update", (req, res) => {
     request.input("remark", sql.NVarChar(100), remark || "NULL");
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value || null);
+    request.input("isPartWaited", sql.Bit, isPartWaited || null);
     request.execute("sp_updateRepairment", (err, result) => {
       if (err) {
         console.log(err);
@@ -205,6 +207,7 @@ router.post("/insert", (req, res) => {
   var remark = req.body.remark;
   var value = req.body.value;
   var isTech = req.body.isTech;
+  var isPartWaited = req.body.isPartWaited;
   //Customer Device
   var deviceID = req.body.deviceID;
   var customerId = req.body.customerId;
@@ -236,6 +239,7 @@ router.post("/insert", (req, res) => {
     request.input("remark", sql.NVarChar(100), remark || "NULL");
     request.input("value", sql.TinyInt, value || null);
     request.input("isTech", sql.Bit, isTech || null);
+    request.input("isPartWaited", sql.Bit, isPartWaited || null);
     //Customer Device
     request.input("deviceID", sql.BigInt, deviceID || null);
     request.input("customerId", sql.Int, customerId || null);
