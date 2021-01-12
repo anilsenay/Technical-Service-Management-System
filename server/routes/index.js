@@ -13,32 +13,41 @@ router.use("/api/storage", require("./storage"));
 
 // Views
 router.use("/api/getSmartStats", require("./views/getSmartStats"));
+
 router.use("/api/getTechnicianStats", require("./views/getTechnicianStats"));
+
 router.use(
   "/api/getPendingRepairments",
   require("./views/getPendingRepairments")
 );
+
 router.use(
   "/api/getDetailedRepairments",
   require("./views/getDetailedRepairment")
 );
+
 router.use("/api/getDetailedOrders", require("./views/getDetailedOrder"));
+
 router.use(
   "/api/employeesWithRepairmentCount",
   require("./views/employeesWithRepairmentCount")
 );
+
 router.use(
   "/api/getAvgDurationPerEmployee",
   require("./views/getAvgDurationPerEmployee")
 );
+
 router.use(
   "/api/getMostFrequentRepairedModel",
   require("./views/getMostFrequentRepairedModel")
 );
+
 router.use(
   "/api/numberOfChangedPartsDistinctModel",
   require("./views/numberOfChangedPartsDistinctModel")
 );
+
 router.use(
   "/api/sameDeviceRepairmentsMoreThanThree",
   require("./views/sameDeviceRepairmentsMoreThanThree")
