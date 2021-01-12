@@ -125,6 +125,38 @@ router.get("/:id", (req, res) => {
   });
 });
 
+// Update the repairment's information.
+router.put("/update", (req, res) => {
+  var repairmentID = req.body.repairmentID;
+  var employeeID = req.body.employeeID;
+  var isInWarranty = req.body.isInWarranty;
+  var remark = req.body.remark;
+  var partIDNeedChange = req.body.partIDNeedChange;
+  var value = req.body.value;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("repairmentID", sql.Int, repairmentID || null);
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("isInWarranty", sql.Bit, isInWarranty || null);
+    request.input("remark", sql.NVarChar(100), remark || "NULL");
+    request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
+    request.input("value", sql.TinyInt, value || null);
+    request.execute("sp_updateRepairment", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ updatedRepairment: { ...req.body } });
+    });
+  });
+});
+
 // Get the repairment's related information with given id parameter.
 router.get("/info/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
@@ -210,7 +242,7 @@ router.post("/insert", (req, res) => {
     request.input("serialCode", sql.NVarChar(15), serialCode || "NULL");
     request.input("warrantyDueDate", sql.Date, warrantyDueDate || null);
     request.input(
-      "physicalCondition",
+      "pyhsicalCondition",
       sql.NVarChar(100),
       physicalCondition || "NULL"
     );
