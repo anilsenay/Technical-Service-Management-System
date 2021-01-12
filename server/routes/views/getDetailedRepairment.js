@@ -35,7 +35,7 @@ router.get("/", (req, res) => {
               serialCode: item.serialCode,
               warrantyDueDate: item.warrantyDueDate,
               warranty: item.warranty,
-              pyhsicalCondition: item.pyhsicalCondition,
+              physicalCondition: item.physicalCondition,
               proofOfPurchase: item.proofOfPurchase,
             },
             customer: {
