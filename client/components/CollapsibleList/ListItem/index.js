@@ -5,7 +5,6 @@ import styles from "./item.module.scss";
 
 export default function ListItem({ sizes, children }) {
   const [toggleMenu, setToggleMenu] = useState(false);
-  console.log(children);
   return (
     <div className={styles.container}>
       <div className={styles.column}>

@@ -7,6 +7,7 @@ export default function Input({
   required = true,
   error,
   noMargin,
+  smallSize,
   border,
   ...props
 }) {
@@ -17,9 +18,12 @@ export default function Input({
       style={{
         borderColor: error && "red",
         backgroundColor: focus && "white",
-        margin: noMargin && 0,
+        margin: (noMargin || smallSize) && 0,
         borderColor: border && "#d6d3d3",
         borderWidth: border && 2,
+        paddingTop: smallSize && 4,
+        paddingBottom: smallSize && 4,
+        borderRadius: smallSize && 6,
       }}
       onChange={onChange}
       onFocus={() => setFocus(true)}
