@@ -44,7 +44,7 @@ router.post("/insertNewPart", (req, res) => {
   var partModel = req.body.partModel;
   var partColor = req.body.partColor;
   var partPrice = req.body.partPrice;
-  var quantity = req.body.partColor;
+  var quantity = req.body.quantity;
   var boxNumber = req.body.boxNumber;
 
   sql.connect(sqlConfig, () => {
@@ -53,7 +53,7 @@ router.post("/insertNewPart", (req, res) => {
     request.input("partName", sql.NVarChar(50), partName || "NULL");
     request.input("partModel", sql.NVarChar(50), partModel || "NULL");
     request.input("partColor", sql.NVarChar(100), partColor || "NULL");
-    request.input("partPrice", sql.SmallMoney, partPrice || null);
+    request.input("partPrice", sql.SmallMoney, partPrice);
     request.input("quantity", sql.SmallInt, quantity || null);
     request.input("boxNumber", sql.SmallInt, boxNumber || null);
     request.execute("sp_insertNewPartIntoStorage", (err, result) => {
