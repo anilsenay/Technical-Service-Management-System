@@ -39,6 +39,48 @@ router.get("/paid", (req, res) => {
     });
   });
 });
+
+// Update the repairment's information.
+router.put("/update", (req, res) => {
+  var repairmentID = req.body.repairmentID;
+  var employeeID = req.body.employeeID;
+  var isInWarranty = req.body.isInWarranty;
+  var remark = req.body.remark;
+  var partIDNeedChange = req.body.partIDNeedChange;
+  var value = req.body.value;
+  var isPartWaited = req.body.isPartWaited;
+  var repairmentEndDate = req.body.repairmentEndDate;
+  var repairmentEndDateReal = new Date(`${repairmentEndDate} GMT-000`);
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("repairmentID", sql.Int, repairmentID || null);
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("isInWarranty", sql.Bit, isInWarranty);
+    request.input("remark", sql.NVarChar(100), remark || "NULL");
+    request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
+    request.input("value", sql.TinyInt, value);
+    request.input("isPartWaited", sql.Bit, isPartWaited);
+    request.input(
+      "repairmentEndDate",
+      sql.DateTime,
+      repairmentEndDateReal || null
+    );
+    request.execute("sp_updateRepairment", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ updatedRepairment: { ...req.body } });
+    });
+  });
+});
+
 // Get detailed repairments.
 router.get("/getDetailedRepairment/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
@@ -125,6 +167,8 @@ router.get("/:id", (req, res) => {
   });
 });
 
+<<<<<<< HEAD
+=======
 // Update the repairment's information.
 router.put("/update", (req, res) => {
   var repairmentID = req.body.repairmentID;
@@ -159,6 +203,7 @@ router.put("/update", (req, res) => {
   });
 });
 
+>>>>>>> 4cc6bced0724ec97fd7f59f688d00fd29a16308e
 // Get the repairment's related information with given id parameter.
 router.get("/info/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
