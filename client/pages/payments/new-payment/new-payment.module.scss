@@ -11,19 +11,23 @@
     margin-bottom: 30px;
     color: $dark-blue;
   }
-
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
   .content {
     display: flex;
     flex-direction: row;
 
     form {
       display: flex;
-      width: 100%;
+      width: 50%;
     }
 
     .accountContainer {
-      width: 45%;
       margin-right: auto;
+      width: 100%;
     }
     .passwordContainer {
       width: 45%;
@@ -57,7 +61,34 @@
       grid-template-columns: 1fr 2fr;
       align-items: center;
       margin-bottom: 10px;
-      gap: 10px;
+
+      input {
+        width: 100%;
+        border: 2px solid #d6d3d3;
+        background-color: #f6f6f6;
+        padding: 12px;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        border-radius: 6px;
+        appearance: none;
+        position: relative;
+        z-index: 0;
+      }
+      .selectContainer {
+        position: relative;
+        select {
+          width: 100%;
+          border: 2px solid #d6d3d3;
+          background-color: #f6f6f6;
+          padding: 12px;
+          padding-bottom: 4px;
+          padding-top: 4px;
+          border-radius: 6px;
+          appearance: none;
+          position: relative;
+          z-index: 0;
+        }
+      }
     }
 
   }

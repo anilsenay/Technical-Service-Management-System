@@ -1,0 +1,14 @@
+.contentContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    .content {
+        p{
+            display: flex;
+            span {
+                font-weight: bold;
+                margin-right: 6px;
+            }
+        }
+    }
+}
