@@ -13,8 +13,8 @@ import { DownArrowIcon } from "../../../components/Icons";
 const DownArrow = () => {
   return (
     <DownArrowIcon
-      width={16}
-      height={16}
+      width={12}
+      height={12}
       fill="grey"
       style={{
         position: "absolute",
@@ -328,33 +328,35 @@ export default function CreateRepairment() {
               </div>
             </div>
             <div className={styles.case}>
+              <label>Solution Type</label>
+              <div className={styles.selectContainer}>
+                <select id="type" name="type">
+                  <option value="DESC"></option>
+                  <option value="factory-reset">Factory Reset</option>
+                  <option value="smart-upgrade">Smart Upgrade</option>
+                </select>
+                <DownArrow />
+              </div>
+            </div>
+          </div>
+          <div style={{marginRight: 36,marginTop: 4}}>
+            <div className={styles.case}>
               <label>Case Description</label>
-              <Input
-                name="phone"
-                onChange={handleChange}
-                defaultValue={user?.phoneNumber}
-                noMargin
-                error={errors.phone}
-                border
-                smallSize
-              />
+              <textarea name="case-description" cols="2" />
             </div>
           </div>
           <h4>Remark</h4>
           <div className={styles.remark}>
-            <Input
-              name="phone"
-              onChange={handleChange}
-              defaultValue={user?.phoneNumber}
-              noMargin
-              error={errors.phone}
-              border
-              smallSize
-            />
+            <textarea name="case-description" cols="2" />
           </div>
-          <Button type="submit" name="update_button" value="Update">
-            Update
-          </Button>
+          <div className={styles.buttons}>
+            <Button type="submit" name="update_button" value="Update">
+              Update
+            </Button>
+            <Button type="submit" name="update_button" value="Update">
+              Update
+            </Button>
+          </div>
         </form>
       </main>
     </Layout>

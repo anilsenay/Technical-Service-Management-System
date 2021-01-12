@@ -44,6 +44,11 @@ export default function SideBar() {
             link="/repairments/assigned-repairments"
             isActive={router?.pathname.includes("assigned-repairments")}
           />
+          <SideBarItem.SubItem
+            text="Pending Repairments"
+            link="/repairments/pending-repairments"
+            isActive={router?.pathname.includes("pending-repairments")}
+          />
         </SideBarItem>
       </section>
       <section className={styles.itemContainer}>

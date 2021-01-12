@@ -11,18 +11,21 @@
     margin-bottom: 30px;
     color: $dark-blue;
   }
-
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+  }
   .content {
     display: flex;
     flex-direction: row;
 
     form {
       display: flex;
-      width: 100%;
+      width: 50%;
     }
 
     .accountContainer {
-      width: 45%;
       margin-right: auto;
     }
     .passwordContainer {
@@ -54,7 +57,7 @@
     }
     .inputContainer {
       display: grid;
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: 1fr 2fr 0.2fr 1fr 2fr;
       align-items: center;
       margin-bottom: 10px;
       gap: 10px;

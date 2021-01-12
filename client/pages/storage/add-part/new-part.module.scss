@@ -11,19 +11,23 @@
     margin-bottom: 30px;
     color: $dark-blue;
   }
-
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
   .content {
     display: flex;
     flex-direction: row;
 
     form {
       display: flex;
-      width: 100%;
+      width: 50%;
     }
 
     .accountContainer {
-      width: 45%;
       margin-right: auto;
+      width: 100%;
     }
     .passwordContainer {
       width: 45%;

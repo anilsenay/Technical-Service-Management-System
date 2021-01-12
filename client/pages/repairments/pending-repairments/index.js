@@ -7,7 +7,7 @@ import {format} from 'date-fns'
 
 import styles from "./list.module.scss";
 
-export default function ListRepairments({data}) {
+export default function PendingRepairments({data}) {
   const columns = ["ID",
   "Start Date",
   "Status",
@@ -82,7 +82,7 @@ export default function ListRepairments({data}) {
   );
 }
 
-ListRepairments.getInitialProps = async function ({ query }) {
+PendingRepairments.getInitialProps = async function ({ query }) {
   let data = {};
   let error = {};
 
