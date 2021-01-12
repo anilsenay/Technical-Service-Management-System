@@ -107,6 +107,109 @@ router.get("/availability/:id", (req, res) => {
   });
 });
 
+// Get detailed repairments.
+router.get("/getDetailedRepairment/:employeeID", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("employeeID", sql.TinyInt, req.params.employeeID);
+    request.execute("sp_getDetailedRepairmentEmployee", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      const allJson = result.recordset.map((item) => {
+        return {
+          ID: item.ID,
+          repairmentStartDate: item.repairmentStartDate,
+          repairmentEndDate: item.repairmentEndDate,
+          isPartWaited: item.isPartWaited,
+          isInWarranty: item.isInWarranty,
+          remark: item.remark,
+          repairmentDuration: item.repairmentDuration,
+          device: {
+            deviceID: item.deviceID,
+            model: item.model,
+            colorCode: item.colorCode,
+            serialCode: item.serialCode,
+            warrantyDueDate: item.warrantyDueDate,
+            warranty: item.warranty,
+            physicalCondition: item.physicalCondition,
+            proofOfPurchase: item.proofOfPurchase,
+          },
+          customer: {
+            customerID: item.customerID,
+            firstName: item.firstName,
+            lastName: item.lastName,
+          },
+          case: {
+            caseID: item.caseID,
+            caseType: item.caseType,
+            caseCategory: item.caseCategory,
+            caseSpecification: item.caseSpecification,
+            caseDescription: item.caseDescription,
+          },
+          employee: {
+            employeeID: item.employeeID,
+            EmpfirstName: item.EmpfirstName,
+            EmplastName: item.EmplastName,
+            username: item.username,
+            email: item.email,
+            isManager: item.isManager,
+            isSmartService: item.isSmartService,
+            isTechnician: item.isTechnician,
+            isStorageMan: item.isStorageMan,
+            isTester: item.isTester,
+            isAccountant: item.isAccountant,
+          },
+        };
+      });
+      return res.status(200).send({ detailedRepairment: allJson || null });
+    });
+  });
+});
+
+// Insert a new employee availability.
+router.post("/availability/insert/", (req, res) => {
+  var employeeID = req.body.employeeID;
+  var monday = req.body.monday;
+  var tuesday = req.body.tuesday;
+  var wednesday = req.body.wednesday;
+  var thursday = req.body.thursday;
+  var friday = req.body.friday;
+  var saturday = req.body.saturday;
+  var startHour = req.body.startHour;
+  var endHour = req.body.endHour;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("employeeID", sql.TinyInt, employeeID || null);
+    request.input("monday", sql.Bit, monday || null);
+    request.input("tuesday", sql.Bit, tuesday || null);
+    request.input("wednesday", sql.Bit, wednesday || null);
+    request.input("thursday", sql.Bit, thursday || null);
+    request.input("friday", sql.Bit, friday || null);
+    request.input("saturday", sql.Bit, saturday || null);
+    request.input("startHour", sql.Time, startHour || null);
+    request.input("endHour", sql.Time, endHour || null);
+    request.execute("sp_InsertNewEmployeeAvailability", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+      return res.status(200).send({ newAvailability: { ...req.body } });
+    });
+  });
+});
+
 // Update the employee's password.
 router.put("/updatePassword", (req, res) => {
   var username = req.body.username;
@@ -159,6 +262,28 @@ router.put("/update", (req, res) => {
       sql.close();
 
       return res.status(200).send({ updatedEmployee: { ...req.body } });
+    });
+  });
+});
+
+// Delete employee with given employeeID
+router.delete("/delete/:employeeID", (req, res) => {
+  var employeeID = req.params.employeeID;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.input("employeeIDtoBeDeleted", sql.TinyInt, employeeID || null);
+    request.execute("sp_deleteEmployee", (err, result) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      sql.close();
+
+      return res.status(200).send({ deletedEmployee: { ...req.params } });
     });
   });
 });
