@@ -206,6 +206,8 @@ router.post("/availability/insert/", (req, res) => {
   var saturday = req.body.saturday;
   var startHour = req.body.startHour;
   var endHour = req.body.endHour;
+  var startDate = new Date(`01/01/1970 ${startHour} GMT-0000`);
+  var endDate = new Date(`01/01/1970 ${endHour} GMT-0000`);
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("employeeID", sql.TinyInt, employeeID || null);
@@ -215,8 +217,8 @@ router.post("/availability/insert/", (req, res) => {
     request.input("thursday", sql.Bit, thursday || null);
     request.input("friday", sql.Bit, friday || null);
     request.input("saturday", sql.Bit, saturday || null);
-    request.input("startHour", sql.Time, startHour || null);
-    request.input("endHour", sql.Time, endHour || null);
+    request.input("startHour", sql.Time, startDate || null);
+    request.input("endHour", sql.Time, endDate || null);
     request.execute("sp_InsertNewEmployeeAvailability", (err, result) => {
       if (err) {
         console.log(err);
