@@ -22,6 +22,28 @@ router.get("/", (req, res) => {
   });
 });
 
+// Get all employee availabilities
+router.get("/availabilities", (req, res) => {
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.query(
+      "SELECT * FROM dbo.[EMPLOYEE_AVAILABILITY]",
+      (err, recordsets) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+        return res.status(200).send({ availabilities: recordsets.recordset }); // Result in JSON format
+      }
+    );
+  });
+});
+
 // Get employee's all repairments information with given id, firstName and lastName parameters.
 router.get("/repairments", (req, res) => {
   sql.connect(sqlConfig, () => {
