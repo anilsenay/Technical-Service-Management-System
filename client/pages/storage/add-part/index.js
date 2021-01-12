@@ -10,32 +10,43 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup
+  partID: yup
+    .number()
+    .typeError("* Part ID must include only numbers")
+    .required("* Part ID is required"),
+  partName: yup
     .string()
-    .required("* Name is required.")
-    .min(2, "* Name is too short"),
-  surname: yup
+    .required("* Part Name is required")
+    .min(2, "* Part Name is too short"),
+  partModel: yup
     .string()
-    .required("* Surname is required.")
-    .min(2, "* Surname is too short"),
-  email: yup.string().email().required("* Email is required."),
-  phone: yup
-    .string()
-    .notRequired()
-    .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g, {
-      message: "* Invalid Phone Number",
-      excludeEmptyString: true,
-    }),
+    .required("* Part Model is required")
+    .min(1, "* Part Model is too short"),
+  partColor: yup
+    .string().nullable(),
+  partPrice: yup
+    .number()
+    .required("* Part Price is required"),
+  partQuantity: yup
+    .number()
+    .required("* Part Quantity is required"),
+  boxNumber: yup
+    .number()
+    .required("* Box Number is required")
+    .typeError("* Box Number is required")
 });
 
 export default function AddPart() {
   const user = null;
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
-      email: "",
-      phone: "",
+      partID: "",
+      partName: "",
+      partModel: "",
+      partColor: null,
+      partPrice: 0,
+      partQuantity: 0,
+      boxNumber: null,
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -52,11 +63,10 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part ID</span>
                 <Input
-                  name="phone"
+                  name="partID"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID}
                   border
                   smallSize
                 />
@@ -64,11 +74,10 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part Name</span>
                 <Input
-                  name="phone"
+                  name="partName"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partName}
                   border
                   smallSize
                 />
@@ -76,11 +85,10 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part Model</span>
                 <Input
-                  name="phone"
+                  name="partModel"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partModel}
                   border
                   smallSize
                 />
@@ -88,11 +96,10 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part Color</span>
                 <Input
-                  name="phone"
+                  name="partColor"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partColor}
                   border
                   smallSize
                 />
@@ -100,44 +107,84 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part Price</span>
                 <Input
-                  name="phone"
+                  name="partPrice"
+                  defaultValue={0}
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partPrice}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
               </div>
-              
-              {errors.name && (
+              <div className={styles.inputContainer}>
+                <span>Part Quantity</span>
+                <Input
+                  name="partQuantity"
+                  defaultValue={0}
+                  onChange={handleChange}
+                  noMargin
+                  error={errors.partQuantity}
+                  border
+                  smallSize
+                />
+                <div className={styles.seperator} />
+              </div>
+              <div className={styles.inputContainer}>
+                <span>Box Number</span>
+                <Input
+                  name="boxNumber"
+                  onChange={handleChange}
+                  noMargin
+                  error={errors.boxNumber}
+                  border
+                  smallSize
+                />
+                <div className={styles.seperator} />
+              </div>
+
+              {errors.partID && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.partID}
                 </p>
               )}
-              {errors.surname && (
+              {errors.partName && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
+                  {errors.partName}
                 </p>
               )}
-              {errors.email && (
+              {errors.partModel && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.email}
+                  {errors.partModel}
                 </p>
               )}
-              {errors.phone && (
+              {errors.partColor && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.phone}
+                  {errors.partColor}
+                </p>
+              )}
+              {errors.partPrice && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.partPrice}
+                </p>
+              )}
+              {errors.partQuantity && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.partQuantity}
+                </p>
+              )}
+              {errors.boxNumber && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.boxNumber}
                 </p>
               )}
             </div>
           </div>
-         
-            <Button type="submit" name="update_button" value="Update">
-              Add New Part
+
+          <Button type="submit" name="create-button" value="Create">
+            Add New Part
             </Button>
-            
+
         </form>
       </main>
     </Layout>

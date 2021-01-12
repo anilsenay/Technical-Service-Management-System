@@ -47,10 +47,20 @@ const globalHook = () => {
       });
   };
 
+  const logout = () => {
+    globalDispatch({
+      type: "SET_LOGGED_USER",
+      payload: null,
+    });
+  }
+
   return {
     useGlobalState,
     setLoggedUser,
+    logout,
   };
 };
+
+
 
 export default globalHook;

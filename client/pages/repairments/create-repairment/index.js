@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./create-repairment.module.scss";
 
@@ -28,15 +28,34 @@ const DownArrow = () => {
 };
 
 const schema = yup.object().shape({
-  name: yup
+  deviceID: yup
+    .number()
+    .typeError("* Device ID must be include only number")
+    .required("* Device ID is required.")
+    .min(1, "* Device ID is too short"),
+  model: yup
     .string()
-    .required("* Name is required.")
-    .min(2, "* Name is too short"),
-  surname: yup
+    .required("* Model is required.")
+    .min(1, "* Model is too short"),
+  colorCode: yup
     .string()
-    .required("* Surname is required.")
-    .min(2, "* Surname is too short"),
-  email: yup.string().email().required("* Email is required."),
+    .required("* Color Code is required.")
+    .min(1, "* Color Code is too short"),
+  serialCode: yup
+    .string()
+    .required("* Serial Code is required.")
+    .min(1, "* Serial Code is too short"),
+  warrantyDueDate: yup.date().required("* Warranty Due Date is required."),
+  proofOfPurchase: yup.boolean(),
+  isInWarranty: yup.boolean(),
+  customerName: yup
+    .string()
+    .required("* Customer Name is required.")
+    .min(2, "* Customer Name is too short"),
+  customerSurname: yup
+    .string()
+    .required("* Customer Surname is required.")
+    .min(2, "* Customer Surname is too short"),
   phone: yup
     .string()
     .notRequired()
@@ -44,22 +63,81 @@ const schema = yup.object().shape({
       message: "* Invalid Phone Number",
       excludeEmptyString: true,
     }),
+  streetName: yup
+    .string()
+    .required("* Customer Name is required.")
+    .min(2, "* Customer Name is too short"),
+  streetNumber: yup
+    .string(),
+  city: yup
+    .string()
+    .required("* City is required.")
+    .min(2, "* City is too short"),
+  country: yup
+    .string()
+    .required("* Country is required.")
+    .min(2, "* Country is too short"),
+  zipcode: yup
+    .string(),
+  type: yup
+    .number(),
+  category: yup
+    .number(),
+  specification: yup
+    .number(),
+  solution: yup
+    .string(),
+  description: yup
+    .string()
+    .required("* Description is required.")
+    .min(3, "* Description must be min 3 words"),
+  remark: yup
+    .string()
+    .required("* Remark is required.")
+    .min(3, "* Remark must be min 3 words"),
+  isTech: yup.boolean(),
 });
 
 export default function CreateRepairment() {
+  const [cases, setCases] = useState();
   const user = null;
-  const { handleSubmit, handleChange, errors } = useFormik({
+  const { handleSubmit, handleChange, setFieldValue, errors, values } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
-      email: "",
+      deviceID: "",
+      model: "",
+      colorCode: "",
+      serialCode: "",
+      warrantyDueDate: new Date().toISOString(),
+      physicalCondition: "",
+      proofOfPurchase: false,
+      isInWarranty: false,
+      customerName: "",
+      customerSurname: "",
       phone: "",
+      streetName: "",
+      streetNumber: "",
+      city: "İstanbul",
+      country: "Türkiye",
+      zipcode: "",
+      type: 1,
+      category: 1,
+      specification: 1,
+      solution: 1,
+      description: "",
+      remark: "",
+      isTech: false,
     },
     validationSchema: schema,
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
+  useEffect(async () => {
+    const res = await fetch('http://localhost:5000/api/cases/info')
+    const json = await res.json().then(data => setCases(data))
+  }, [])
+  console.log(errors)
   return (
     <Layout>
       <main className={styles.container}>
@@ -70,11 +148,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Device ID</span>
                 <Input
-                  name="name"
+                  name="deviceID"
                   onChange={handleChange}
-                  defaultValue={user?.name}
                   noMargin
-                  placeholder="Name"
                   error={errors.name}
                   border
                   smallSize
@@ -83,11 +159,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Model</span>
                 <Input
-                  name="surname"
+                  name="model"
                   onChange={handleChange}
-                  defaultValue={user?.surname}
                   noMargin
-                  placeholder="Surname"
                   error={errors.surname}
                   border
                   smallSize
@@ -96,11 +170,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Color Code</span>
                 <Input
-                  name="email"
+                  name="colorCode"
                   onChange={handleChange}
-                  defaultValue={user?.email}
                   noMargin
-                  placeholder="E-mail"
                   error={errors.email}
                   border
                   smallSize
@@ -109,7 +181,7 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Serial Code</span>
                 <Input
-                  name="phone"
+                  name="serialCode"
                   onChange={handleChange}
                   defaultValue={user?.phoneNumber}
                   noMargin
@@ -120,20 +192,12 @@ export default function CreateRepairment() {
               </div>
               <div className={styles.inputContainer}>
                 <span>Warranty Due Date</span>
-                <Input
-                  name="phone"
-                  onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
-                  noMargin
-                  error={errors.phone}
-                  border
-                  smallSize
-                />
+                <input type="date" id="warrantyDueDate" name="warrantyDueDate" className={styles.input} onChange={handleChange} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Physical Condition</span>
                 <Input
-                  name="phone"
+                  name="physicalCondition"
                   onChange={handleChange}
                   defaultValue={user?.phoneNumber}
                   noMargin
@@ -144,31 +208,31 @@ export default function CreateRepairment() {
               </div>
               <div className={styles.inputContainer}>
                 <span>Proof Of Purchase</span>
-                <input type="checkbox" className={styles.checkbox} />
+                <input type="checkbox" className={styles.checkbox} name="proofOfPurchase" onChange={handleChange} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Is in warranty</span>
-                <input type="checkbox" className={styles.checkbox} />
+                <input type="checkbox" className={styles.checkbox} name="isInWarranty" onChange={handleChange} />
               </div>
 
-              {errors.name && (
+              {errors.deviceID && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.deviceID}
                 </p>
               )}
-              {errors.surname && (
+              {errors.model && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
+                  {errors.model}
                 </p>
               )}
-              {errors.email && (
+              {errors.colorCode && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.email}
+                  {errors.colorCode}
                 </p>
               )}
-              {errors.phone && (
+              {errors.serialCode && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.phone}
+                  {errors.serialCode}
                 </p>
               )}
             </div>
@@ -178,11 +242,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Name</span>
                 <Input
-                  name="name"
+                  name="customerName"
                   onChange={handleChange}
-                  defaultValue={user?.name}
                   noMargin
-                  placeholder="Name"
                   error={errors.name}
                   border
                   smallSize
@@ -191,11 +253,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Surname</span>
                 <Input
-                  name="surname"
+                  name="customerSurname"
                   onChange={handleChange}
-                  defaultValue={user?.surname}
                   noMargin
-                  placeholder="Surname"
                   error={errors.surname}
                   border
                   smallSize
@@ -206,7 +266,6 @@ export default function CreateRepairment() {
                 <Input
                   name="phone"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -216,9 +275,8 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Street Name</span>
                 <Input
-                  name="phone"
+                  name="streetName"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -228,9 +286,8 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Street Number</span>
                 <Input
-                  name="phone"
+                  name="streetNumber"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -240,9 +297,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>City</span>
                 <Input
-                  name="phone"
+                  name="city"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
+                  defaultValue="İstanbul"
                   noMargin
                   error={errors.phone}
                   border
@@ -252,9 +309,9 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Country</span>
                 <Input
-                  name="phone"
+                  name="country"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
+                  defaultValue="Türkiye"
                   noMargin
                   error={errors.phone}
                   border
@@ -264,28 +321,22 @@ export default function CreateRepairment() {
               <div className={styles.inputContainer}>
                 <span>Zipcode</span>
                 <Input
-                  name="phone"
+                  name="zipcode"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
               </div>
-              {errors.name && (
+              {errors.customerName && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.customerName}
                 </p>
               )}
-              {errors.surname && (
+              {errors.customerSurname && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
-                </p>
-              )}
-              {errors.email && (
-                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.email}
+                  {errors.customerSurname}
                 </p>
               )}
               {errors.phone && (
@@ -300,9 +351,10 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Case Type</label>
               <div className={styles.selectContainer}>
-                <select id="type" name="type">
-                  <option value="DESC">Desc</option>
-                  <option value="ASC">Asc</option>
+                <select id="type" name="type" onChange={handleChange}>
+                  {cases?.types?.map(item => {
+                    return <option value={+item.ID}>{item.type}</option>
+                  })}
                 </select>
                 <DownArrow />
               </div>
@@ -310,9 +362,10 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Case Category</label>
               <div className={styles.selectContainer}>
-                <select id="type" name="type">
-                  <option value="DESC">Desc</option>
-                  <option value="ASC">Asc</option>
+                <select id="category" name="category" onChange={handleChange}>
+                  {cases?.categories?.map(item => {
+                    return values.type == item.caseType && <option value={+item.ID}>{item.category}</option>
+                  })}
                 </select>
                 <DownArrow />
               </div>
@@ -320,9 +373,10 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Case Specification</label>
               <div className={styles.selectContainer}>
-                <select id="type" name="type">
-                  <option value="DESC">Desc</option>
-                  <option value="ASC">Asc</option>
+                <select id="specification" name="specification" onChange={handleChange}>
+                  {cases?.specifications?.map(item => {
+                    return values.category == item.caseCategory && <option value={+item.ID}>{item.specification}</option>
+                  })}
                 </select>
                 <DownArrow />
               </div>
@@ -330,8 +384,7 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Solution Type</label>
               <div className={styles.selectContainer}>
-                <select id="type" name="type">
-                  <option value="DESC"></option>
+                <select id="solution" name="solution">
                   <option value="factory-reset">Factory Reset</option>
                   <option value="smart-upgrade">Smart Upgrade</option>
                 </select>
@@ -339,22 +392,38 @@ export default function CreateRepairment() {
               </div>
             </div>
           </div>
-          <div style={{marginRight: 36,marginTop: 4}}>
+          <div style={{ marginRight: 36, marginTop: 4 }}>
             <div className={styles.case}>
               <label>Case Description</label>
-              <textarea name="case-description" cols="2" />
+              <textarea name="description" cols="2" onChange={handleChange} />
             </div>
           </div>
+          {errors.description && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              {errors.description}
+            </p>
+          )}
           <h4>Remark</h4>
           <div className={styles.remark}>
-            <textarea name="case-description" cols="2" />
+            <textarea name="remark" cols="2" onChange={handleChange} />
           </div>
+          {errors.remark && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              {errors.remark}
+            </p>
+          )}
           <div className={styles.buttons}>
-            <Button type="submit" name="update_button" value="Update">
-              Update
+            <Button type="button" name="create_button" value="create" onClick={() => {
+              setFieldValue('isTech', false);
+              handleSubmit();
+            }}>
+              Create Repairment
             </Button>
-            <Button type="submit" name="update_button" value="Update">
-              Update
+            <Button type="submit" name="assign_button" value="assign" onClick={() => {
+              setFieldValue('isTech', true);
+              handleSubmit();
+            }}>
+              Assign Repairment
             </Button>
           </div>
         </form>

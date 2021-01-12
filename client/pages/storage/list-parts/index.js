@@ -3,22 +3,24 @@ import CollapsibleList from "../../../components/CollapsibleList";
 import ListItem from "../../../components/CollapsibleList/ListItem";
 import Layout from "../../../components/Layout";
 
-import {format} from 'date-fns'
+import { format } from 'date-fns'
+import FilterBar from "../../../components/CollapsibleList/FilterBar";
 
-export default function ListParts({data}) {
+export default function ListParts({ data }) {
   const columns = ["ID",
-  "Part Name",
-  "Part Model",
-  "Part Color",
-  "Price",
-  "Quantity",
-  "Box Number"
+    "Part Name",
+    "Part Model",
+    "Part Color",
+    "Price",
+    "Quantity",
+    "Box Number"
   ];
   const columnSizes = [0.5, 2.5, 1.5, 1.2, 1, 1, 1];
   console.log(data);
   return (
     <Layout>
-      <CollapsibleList size={data.length} columns={columns} columnSizes={columnSizes}>
+      <FilterBar size={data?.length || 0} />
+      <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {
           return (
             <ListItem sizes={columnSizes}>
@@ -32,14 +34,14 @@ export default function ListParts({data}) {
                 <ListItem.Item >{item.boxNumber}</ListItem.Item>
               </ListItem.Columns>
               <ListItem.Content>
-                  <div >
+                <div >
 
                 </div>
               </ListItem.Content>
             </ListItem>
           )
         })}
-        
+
       </CollapsibleList>
     </Layout>
   );

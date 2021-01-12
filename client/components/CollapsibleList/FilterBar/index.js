@@ -30,12 +30,12 @@ export default function FilterBar({ size }) {
       <span className={styles.showingText}>
         Showing <span className={styles.sizeText}>{size}</span> results
       </span>
-      <label for="filter">Filter</label>
+      <label for="filter">ID</label>
       <Select id="filter1" name="filter1">
         <option value="DESC">Desc</option>
         <option value="ASC">Asc</option>
       </Select>
-      <label for="filter">Filter</label>
+      <label for="filter">Date</label>
       <Select id="filter2" name="filter2">
         <option value="DESC">Desc</option>
         <option value="ASC">Asc</option>

@@ -7,3 +7,4 @@ export { default as StorageIcon } from "./storage";
 export { default as ManIcon } from "./man";
 export { default as PaymentIcon } from "./payment";
 export { default as LogoutIcon } from "./logout";
+export { default as TickIcon } from "./tick";

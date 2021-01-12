@@ -21,6 +21,7 @@ export default function Input({
         margin: (noMargin || smallSize) && 0,
         borderColor: border && "#d6d3d3",
         borderWidth: border && 2,
+        padding: smallSize && 12,
         paddingTop: smallSize && 4,
         paddingBottom: smallSize && 4,
         borderRadius: smallSize && 6,

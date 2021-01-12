@@ -28,32 +28,24 @@ const DownArrow = () => {
 };
 
 const schema = yup.object().shape({
-  name: yup
+  repairmentID: yup
+    .number()
+    .required("* Repairment ID is required")
+    .min(1, "* Repairment ID is too short"),
+  totalCost: yup
     .string()
-    .required("* Name is required.")
-    .min(2, "* Name is too short"),
-  surname: yup
-    .string()
-    .required("* Surname is required.")
-    .min(2, "* Surname is too short"),
-  email: yup.string().email().required("* Email is required."),
-  phone: yup
-    .string()
-    .notRequired()
-    .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g, {
-      message: "* Invalid Phone Number",
-      excludeEmptyString: true,
-    }),
+    .required("* Total Cost is required")
+    .min(0, "* Total Cost must be bigger than zero"),
+  paymentMethod: yup.string().required("* Payment Method is required."),
 });
 
 export default function NewPayment() {
   const user = null;
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
-      email: "",
-      phone: "",
+      repairmentID: "",
+      totalCost: "",
+      paymentMethod: 1,
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -70,11 +62,10 @@ export default function NewPayment() {
               <div className={styles.inputContainer}>
                 <span>Repairment ID</span>
                 <Input
-                  name="phone"
+                  name="repairmentID"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.repairmentID}
                   border
                   smallSize
                 />
@@ -82,11 +73,10 @@ export default function NewPayment() {
               <div className={styles.inputContainer}>
                 <span>Total Cost</span>
                 <Input
-                  name="phone"
+                  name="totalCost"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.totalCost}
                   border
                   smallSize
                 />
@@ -94,41 +84,38 @@ export default function NewPayment() {
               <div className={styles.inputContainer}>
                 <span>Payment Method</span>
                 <div className={styles.selectContainer}>
-                  <select id="type" name="type">
-                    <option value="DESC">Desc</option>
-                    <option value="ASC">Asc</option>
+                  <select id="paymentMethod" name="paymentMethod" onChange={handleChange}>
+                    <option value={1}>Nakit</option>
+                    <option value={2}>Kredi Kartı</option>
+                    <option value={3}>Mobil Ödeme</option>
+                    <option value={4}>Havale</option>
                   </select>
                   <DownArrow />
                 </div>
               </div>
-              
-              {errors.name && (
+
+              {errors.repairmentID && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.repairmentID}
                 </p>
               )}
-              {errors.surname && (
+              {errors.totalCost && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
+                  {errors.totalCost}
                 </p>
               )}
-              {errors.email && (
+              {errors.paymentMethod && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.email}
-                </p>
-              )}
-              {errors.phone && (
-                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.phone}
+                  {errors.paymentMethod}
                 </p>
               )}
             </div>
           </div>
-         
-            <Button type="submit" name="update_button" value="Update">
-              Create New Payment
+
+          <Button type="submit" name="update_button" value="Update">
+            Create New Payment
             </Button>
-            
+
         </form>
       </main>
     </Layout>

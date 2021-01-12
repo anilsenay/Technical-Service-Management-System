@@ -3,20 +3,22 @@ import CollapsibleList from "../../../components/CollapsibleList";
 import ListItem from "../../../components/CollapsibleList/ListItem";
 import Layout from "../../../components/Layout";
 
-import {format} from 'date-fns'
+import { format } from 'date-fns'
+import FilterBar from "../../../components/CollapsibleList/FilterBar";
 
-export default function ListOrders({data}) {
+export default function ListOrders({ data }) {
   const columns = ["ID",
-  "Order Date",
-  "Employee",
-  "Total Cost",
-  "Confirmed",
+    "Order Date",
+    "Employee",
+    "Total Cost",
+    "Confirmed",
   ];
   const columnSizes = [0.5, 1.7, 2, 1.2, 1.5];
   console.log(data);
   return (
     <Layout>
-      <CollapsibleList size={data.length} columns={columns} columnSizes={columnSizes}>
+      <FilterBar size={data?.length || 0} />
+      <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {
           return (
             <ListItem sizes={columnSizes}>
@@ -28,14 +30,14 @@ export default function ListOrders({data}) {
                 <ListItem.Item>{item.isConfirmed ? "Yes" : "No"}</ListItem.Item>
               </ListItem.Columns>
               <ListItem.Content>
-                  <div >
+                <div >
 
                 </div>
               </ListItem.Content>
             </ListItem>
           )
         })}
-        
+
       </CollapsibleList>
     </Layout>
   );

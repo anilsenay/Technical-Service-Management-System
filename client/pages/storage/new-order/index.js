@@ -10,32 +10,41 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required("* Name is required.")
-    .min(2, "* Name is too short"),
-  surname: yup
-    .string()
-    .required("* Surname is required.")
-    .min(2, "* Surname is too short"),
-  email: yup.string().email().required("* Email is required."),
-  phone: yup
-    .string()
-    .notRequired()
-    .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g, {
-      message: "* Invalid Phone Number",
-      excludeEmptyString: true,
-    }),
+  partID_1: yup
+    .number()
+    .typeError("* Part ID must include only number")
+    .required("* You must have at least one part to create an order"),
+  partID_1_quantity: yup
+    .number()
+    .required("* You must order at least 1 piece")
+    .min(1, "* You must order at least 1 piece"),
+
 });
 
 export default function NewOrder() {
   const user = null;
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
-      email: "",
-      phone: "",
+      partID_1: "",
+      partID_1_quantity: "",
+      partID_2: null,
+      partID_2_quantity: null,
+      partID_3: null,
+      partID_3_quantity: null,
+      partID_4: null,
+      partID_4_quantity: null,
+      partID_5: null,
+      partID_5_quantity: null,
+      partID_6: null,
+      partID_6_quantity: null,
+      partID_7: null,
+      partID_7_quantity: null,
+      partID_8: null,
+      partID_8_quantity: null,
+      partID_9: null,
+      partID_9_quantity: null,
+      partID_10: null,
+      partID_10_quantity: null,
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -52,7 +61,7 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 1 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_1"
                   onChange={handleChange}
                   defaultValue={user?.phoneNumber}
                   noMargin
@@ -60,13 +69,12 @@ export default function NewOrder() {
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_1_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -76,21 +84,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 2 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_2"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_2_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -100,20 +106,18 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 3 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_3"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_3_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -123,21 +127,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 4 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_4"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
-                
+                <div className={styles.seperator} />
+
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_4_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -147,21 +149,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 5 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_5"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_5_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -171,21 +171,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 6 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_6"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_6_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -195,21 +193,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 7 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_7"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_7_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -219,21 +215,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 8 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_8"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_8_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -243,21 +237,19 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 9 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_9"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_9_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -267,54 +259,43 @@ export default function NewOrder() {
               <div className={styles.inputContainer}>
                 <span>Part 10 ID</span>
                 <Input
-                  name="phone"
+                  name="partID_10"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
 
                 <span>Part Quantity</span>
                 <Input
-                  name="phone"
+                  name="partID_10_quantity"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
                   smallSize
                 />
               </div>
-              {errors.name && (
+              {errors.partID_1 && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.partID_1}
                 </p>
               )}
-              {errors.surname && (
+              {errors.partID_1_quantity && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
+                  {errors.partID_1_quantity}
                 </p>
               )}
-              {errors.email && (
-                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.email}
-                </p>
-              )}
-              {errors.phone && (
-                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.phone}
-                </p>
-              )}
+
             </div>
           </div>
-         
-            <Button type="submit" name="update_button" value="Update">
-              Create New Order
+
+          <Button type="submit" name="create_button" value="Create">
+            Create New Order
             </Button>
-            
+
         </form>
       </main>
     </Layout>

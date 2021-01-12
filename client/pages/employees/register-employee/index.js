@@ -8,6 +8,7 @@ import Button from "../../../components/Button";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
+import md5 from "md5";
 
 const schema = yup.object().shape({
   name: yup
@@ -21,11 +22,33 @@ const schema = yup.object().shape({
   email: yup.string().email().required("* Email is required."),
   phone: yup
     .string()
-    .notRequired()
+    .required("* Phone Number is required.")
     .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g, {
       message: "* Invalid Phone Number",
       excludeEmptyString: true,
     }),
+  username: yup
+    .string()
+    .required("* Username is required.")
+    .min(2, "* Username is too short"),
+  password: yup
+    .string()
+    .required("* Password is required.")
+    .min(6, "* Password is too short - should be minimum 6 characters!"),
+  address: yup
+    .string()
+    .required("* Address is required.")
+    .min(2, "* Address is too short"),
+  dateOfBirth: yup
+    .date()
+    .required("* Date Of Birth is required."),
+  startDate: yup
+    .date()
+    .required("* Start Date is required."),
+  type: yup
+    .string()
+    .required("* Type is required.")
+    .min(4, "* Type is too short"),
 });
 
 export default function RegisterEmployee() {
@@ -36,10 +59,16 @@ export default function RegisterEmployee() {
       surname: "",
       email: "",
       phone: "",
+      username: "",
+      password: "",
+      address: "",
+      dateOfBirth: "",
+      startDate: "",
+      type: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      console.log({ ...values, password: md5(values.password) });
     },
   });
   return (
@@ -52,11 +81,10 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Name</span>
                 <Input
-                  name="phone"
+                  name="name"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.name}
                   border
                   smallSize
                 />
@@ -64,11 +92,10 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Surname</span>
                 <Input
-                  name="phone"
+                  name="surname"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.surname}
                   border
                   smallSize
                 />
@@ -78,7 +105,6 @@ export default function RegisterEmployee() {
                 <Input
                   name="phone"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -88,24 +114,22 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Email</span>
                 <Input
-                  name="phone"
+                  name="email"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.email}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Username</span>
                 <Input
-                  name="phone"
+                  name="username"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.username}
                   border
                   smallSize
                 />
@@ -113,54 +137,52 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Password</span>
                 <Input
-                  name="phone"
+                  name="password"
                   type="password"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.password}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Address</span>
                 <Input
-                  name="phone"
+                  name="address"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.address}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Date Of Birth</span>
-                <input type="date" id="birthdate" name="birthdate" />
-                <div className={styles.seperator}/>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" onChange={handleChange} />
+                <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Start Date</span>
-                <input type="date" id="startdate" name="startdate" />
-                <div className={styles.seperator}/>
+                <input type="date" id="startDate" name="startDate" onChange={handleChange} />
+                <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Type</span>
                 <Input
-                  name="phone"
+                  name="type"
+                  placeholder="Manager | Smart Service | Technician | Storage | Tester | Accountant"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.type}
                   border
                   smallSize
                 />
-                <div className={styles.seperator}/>
+                <div className={styles.seperator} />
               </div>
-              
+
               {errors.name && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
                   {errors.name}
@@ -181,13 +203,43 @@ export default function RegisterEmployee() {
                   {errors.phone}
                 </p>
               )}
+              {errors.username && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.username}
+                </p>
+              )}
+              {errors.password && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.password}
+                </p>
+              )}
+              {errors.address && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.address}
+                </p>
+              )}
+              {errors.dateOfBirth && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.dateOfBirth}
+                </p>
+              )}
+              {errors.startDate && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.startDate}
+                </p>
+              )}
+              {errors.type && (
+                <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+                  {errors.type}
+                </p>
+              )}
             </div>
           </div>
-         
-            <Button type="submit" name="update_button" value="Update">
-              Register New Employee
+
+          <Button type="submit" name="update_button" value="Update">
+            Register New Employee
             </Button>
-            
+
         </form>
       </main>
     </Layout>
