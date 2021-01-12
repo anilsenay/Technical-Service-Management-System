@@ -7,18 +7,23 @@ const sqlConfig = require("../config");
 router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.query("SELECT * FROM dbo.[PAYMENT]", (err, recordsets) => {
-      if (err) {
-        console.log(err);
-        if (err.code === "ENOCONN")
-          return res.status(503).send({ error: { err } });
-        return res.status(400).send({ error: { err } });
-      }
+    request.query(
+      `SELECT p.*, e.firstName + ' ' + e.lastName accountantName, pm.paymentMethod methodName 
+       FROM PAYMENT p inner join EMPLOYEE e on p.accountantID=e.ID 
+                      inner join PAYMENT_METHOD pm on p.paymentMethod=pm.ID`,
+      (err, recordsets) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
 
-      res.setHeader("Content-Type", "application/json");
-      sql.close();
-      return res.status(200).send({ payments: recordsets.recordset }); // Result in JSON format
-    });
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+        return res.status(200).send({ payments: recordsets.recordset }); // Result in JSON format
+      }
+    );
   });
 });
 
