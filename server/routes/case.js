@@ -22,6 +22,46 @@ router.get("/", (req, res) => {
   });
 });
 
+// Get all case type/category/specs.
+router.get("/info", (req, res) => {
+  var types = null;
+  var categories = null;
+  var specifications = null;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.query("SELECT * FROM dbo.[CASE_TYPE]", (err, recordsets) => {
+      if (err) {
+        console.log(err);
+        if (err.code === "ENOCONN")
+          return res.status(503).send({ error: { err } });
+        return res.status(400).send({ error: { err } });
+      }
+      types = recordsets.recordset;
+      request.query("SELECT * FROM dbo.[CASE_CATEGORY]", (err, recordsets) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
+        categories = recordsets.recordset;
+        request.query("SELECT * FROM dbo.[CASE_SPECIFICATION]", (err, recordsets) => {
+          if (err) {
+            console.log(err);
+            if (err.code === "ENOCONN")
+              return res.status(503).send({ error: { err } });
+            return res.status(400).send({ error: { err } });
+          }
+
+          res.setHeader("Content-Type", "application/json");
+          sql.close();
+          return res.status(200).send({ types, categories, specifications: recordsets.recordset }); // Result in JSON format
+        });
+      });
+    });
+  });
+});
+
 // Update the case.
 router.put("/update", (req, res) => {
   var caseID = req.body.caseID;
