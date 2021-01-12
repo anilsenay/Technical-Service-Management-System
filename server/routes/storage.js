@@ -77,7 +77,7 @@ router.delete("/delete/:partID", (req, res) => {
   var partID = req.params.partID;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("partID", sql.BigInt, partID || null);
+    request.input("partIDtoBeDeleted", sql.BigInt, partID || null);
     request.execute("sp_deletePartFromStorage", (err, result) => {
       if (err) {
         console.log(err);
