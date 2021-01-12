@@ -52,7 +52,7 @@ router.post("/insertNewPart", (req, res) => {
     request.input("partID", sql.BigInt, partID || null);
     request.input("partName", sql.NVarChar(50), partName || "NULL");
     request.input("partModel", sql.NVarChar(50), partModel || "NULL");
-    request.input("partColor", sql.NVarChar(100), partColor || "NULL");
+    request.input("partColor", sql.NVarChar(10), partColor || "NULL");
     request.input("partPrice", sql.SmallMoney, partPrice);
     request.input("quantity", sql.SmallInt, quantity || null);
     request.input("boxNumber", sql.SmallInt, boxNumber || null);
