@@ -34,6 +34,11 @@ router.use(
 );
 
 router.use(
+  "/api/getPartPendingRepairments",
+  require("./views/getPartPendingRepairments")
+);
+
+router.use(
   "/api/getDetailedRepairments",
   require("./views/getDetailedRepairment")
 );
