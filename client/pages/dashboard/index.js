@@ -18,6 +18,9 @@ export default function dashboard() {
   const [availabilities, setAvailabilities] = useState([])
   const [recentRepairments, setRecentRepairments] = useState([])
   const [repairments, setRepairments] = useState([])
+  const [todayRepairments, setTodayRepairments] = useState(0)
+  const [dailyEarning, setDailyEarning] = useState(0)
+  const [pendingRepairments, setPendingRepairments] = useState(0)
 
   const columns = ["ID",
     "Status",
@@ -46,6 +49,11 @@ export default function dashboard() {
     const json = await res.json().then(data => setRecentRepairments(data.detailedRepairments))
   }, [])
 
+  useEffect(async () => {
+    const res = await fetch("http://localhost:5000/api/getTodaysRepairments/")
+    const json = await res.json().then(data => setTodayRepairments(data.detailedRepairments))
+  }, [])
+
   return (
     <Layout>
 
@@ -54,15 +62,15 @@ export default function dashboard() {
           <div className={styles.stats}>
             <Box>
               <h4>Daily Repairments</h4>
-              <span className={styles.boxCounters}>12</span>
+              <span className={styles.boxCounters}>{todayRepairments || 0}</span>
             </Box>
             <Box>
               <h4>Daily Earning</h4>
-              <span className={styles.boxCounters}>1200 TL</span>
+              <span className={styles.boxCounters}>{dailyEarning || 0} TL</span>
             </Box>
             <Box>
               <h4>Daily Pending Repairments</h4>
-              <span className={styles.boxCounters}>1</span>
+              <span className={styles.boxCounters}>{pendingRepairments || 0}</span>
             </Box>
           </div>
           <div className={styles.recentRepairments}>

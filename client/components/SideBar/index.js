@@ -26,7 +26,7 @@ export default function SideBar() {
         <SideBarItem
           icon={"repairment"}
           text={"Repairments"}
-          link={"/repairments"}
+          link={""}
           isActive={router?.pathname.includes("repairment")}
         >
           <SideBarItem.SubItem
@@ -55,7 +55,7 @@ export default function SideBar() {
         <SideBarItem
           icon={"storage"}
           text={"Storage"}
-          link={"/storage"}
+          link={""}
           isActive={router?.pathname.includes("storage")}
         >
           <SideBarItem.SubItem
@@ -84,7 +84,7 @@ export default function SideBar() {
         <SideBarItem
           icon={"man"}
           text={"Employees"}
-          link={"/employees"}
+          link={""}
           isActive={router?.pathname.includes("employee")}
         >
           <SideBarItem.SubItem
@@ -108,7 +108,7 @@ export default function SideBar() {
         <SideBarItem
           icon={"payment"}
           text={"Payments"}
-          link={"/payments"}
+          link={""}
           isActive={router?.pathname.includes("payment")}
         >
           <SideBarItem.SubItem
