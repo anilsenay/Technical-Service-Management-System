@@ -52,8 +52,8 @@ ListItem.Header = ({ data, noDetails, sizes }) => {
             gridTemplateColumns: sizes.join("fr ") + "fr",
           }}
         >
-          {data.map((item) => (
-            <span>{item}</span>
+          {data.map((item, i) => (
+            <span key={item + i}>{item}</span>
           ))}
         </div>
       </div>

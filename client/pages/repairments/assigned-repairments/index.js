@@ -9,11 +9,14 @@ import styles from "./list.module.scss";
 import Loading from "../../../components/Loading";
 import globalHook from "../../../hooks/global.hook";
 import FilterBar from "../../../components/CollapsibleList/FilterBar";
+import { useRouter } from "next/router";
 
 export default function AssignedRepairments() {
 
   const { useGlobalState } = globalHook();
   const { user } = useGlobalState();
+
+  const router = useRouter();
 
   const [data, setData] = useState(undefined);
   const columns = ["ID",
@@ -30,7 +33,12 @@ export default function AssignedRepairments() {
     const json = await res.json().then(data => setData(data.detailedRepairment))
   }, [])
 
-
+  const update = (data) => {
+    router.push({
+      pathname: '/repairments/update-repairment',
+      query: data
+    })
+  }
 
   console.log(data)
   return (
@@ -92,6 +100,9 @@ export default function AssignedRepairments() {
                             <p><span>Name:</span>{item.employee.EmpfirstName}</p>
                             <p><span>Surname:</span>{item.employee.EmplastName}</p>
                           </div>
+                          <button className={styles.button} onClick={() => update({ repairmentID: item.ID, employeeID: item.employee.employeeID, endDate: item.repairmentEndDate })}>
+                            Update Repairment
+                          </button>
                         </div>
                       </ListItem.Content>
                     </ListItem>

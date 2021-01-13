@@ -57,7 +57,7 @@ export default function UpdatePassword() {
           }
           if (response.ok && data) {
             console.log(data)
-            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...data.user, password: newPassword }));
+            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...user, password: newPassword }));
             router.push("");
           }
         })

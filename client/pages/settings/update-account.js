@@ -58,7 +58,7 @@ export default function UpdateAccount() {
           }
           if (response.ok && data) {
             console.log(data)
-            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...data.user, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }));
+            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...user, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }));
             router.push("");
           }
         })

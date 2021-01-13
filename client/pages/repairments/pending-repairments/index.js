@@ -8,11 +8,14 @@ import { format } from 'date-fns'
 import styles from "./list.module.scss";
 import FilterBar from "../../../components/CollapsibleList/FilterBar";
 import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
 
 export default function PendingRepairments({ data }) {
     const { useGlobalState } = globalHook();
     const { user } = useGlobalState();
 
+    const router = useRouter();
+    console.log(user);
     const columns = ["ID",
         "Start Date",
         "Status",
@@ -23,7 +26,7 @@ export default function PendingRepairments({ data }) {
     const columnSizes = [0.5, 1.7, 1.2, 1.8, 1.5, 1.5, 3];
 
     const assign = (repairmentID) => {
-        fetch('http://localhost:5000/api/orders/updateConfirm', {
+        fetch('http://localhost:5000/api/repairments/updateEmployee', {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ employeeID: user.ID, repairmentID }),

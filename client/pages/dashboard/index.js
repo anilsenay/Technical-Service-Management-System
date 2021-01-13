@@ -51,7 +51,17 @@ export default function dashboard() {
 
   useEffect(async () => {
     const res = await fetch("http://localhost:5000/api/getTodaysRepairments/")
-    const json = await res.json().then(data => setTodayRepairments(data.detailedRepairments))
+    const json = await res.json().then(data => setTodayRepairments(data.todaysRepairments[0].Num))
+  }, [])
+
+  useEffect(async () => {
+    const res = await fetch("http://localhost:5000/api/getDailyEarnings/")
+    const json = await res.json().then(data => setDailyEarning(data.earnings[0].dailyEarning))
+  }, [])
+
+  useEffect(async () => {
+    const res = await fetch("http://localhost:5000/api/getPendingRepairments/")
+    const json = await res.json().then(data => setPendingRepairments(data.pendingRepairments))
   }, [])
 
   return (
@@ -70,7 +80,7 @@ export default function dashboard() {
             </Box>
             <Box>
               <h4>Daily Pending Repairments</h4>
-              <span className={styles.boxCounters}>{pendingRepairments || 0}</span>
+              <span className={styles.boxCounters}>{pendingRepairments.length || 0}</span>
             </Box>
           </div>
           <div className={styles.recentRepairments}>
@@ -80,7 +90,7 @@ export default function dashboard() {
                 <CollapsibleList size={recentRepairments?.length || 0} columns={columns} columnSizes={columnSizes} noDetails>
                   {recentRepairments.map(item => {
                     return (
-                      <ListItem noDetails sizes={columnSizes}>
+                      <ListItem noDetails sizes={columnSizes} key={item.ID}>
                         <ListItem.Columns>
                           <ListItem.Item isId>{item.ID}</ListItem.Item>
                           <ListItem.Item>{item.repairmentEndDate ? "Completed" : "Pending"}</ListItem.Item>
