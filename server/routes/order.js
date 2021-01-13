@@ -228,4 +228,27 @@ router.post("/insert", (req, res) => {
   });
 });
 
+router.put("/updateConfirm", (req, res) => {
+  console.log("update confirm")
+  var confirm = req.body.isConfirmed;
+  var orderID = req.body.orderID;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.query(
+      `UPDATE [ORDER] SET isConfirmed=${confirm} WHERE orderID=${orderID}`,
+      (err, recordsets) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+        return res.status(200).send({ orders: recordsets.recordset }); // Result in JSON format
+      }
+    );
+  });
+});
+
 module.exports = router;
