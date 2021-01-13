@@ -81,6 +81,34 @@ router.put("/update", (req, res) => {
   });
 });
 
+// Update the repairment's employee.
+router.put("/updateEmployee/:employeeID", (req, res) => {
+  var employeeID = req.params.employeeID;
+  sql.connect(sqlConfig, () => {
+    var request = new sql.Request();
+    request.query(
+      `UPDATE REPAIRMENT
+                   SET employeeID=${employeeID}
+                  WHERE ID=@repairmentID`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          if (err.code === "ENOCONN")
+            return res.status(503).send({ error: { err } });
+          return res.status(400).send({ error: { err } });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        sql.close();
+
+        return res
+          .status(200)
+          .send({ updatedEmployeeRepairment: { ...req.params.employeeID } });
+      }
+    );
+  });
+});
+
 // Get detailed repairments.
 router.get("/getDetailedRepairment/:id", (req, res) => {
   sql.connect(sqlConfig, () => {

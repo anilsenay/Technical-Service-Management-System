@@ -17,6 +17,8 @@ router.use(
   require("./views/getRecentRepairments")
 );
 
+router.use("/api/getDailyEarnings", require("./views/getDailyEarnings"));
+
 router.use(
   "/api/getTodaysRepairments",
   require("./views/getTodaysRepairments")
