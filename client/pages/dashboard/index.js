@@ -51,12 +51,12 @@ export default function dashboard() {
 
   useEffect(async () => {
     const res = await fetch("http://localhost:5000/api/getTodaysRepairments/")
-    const json = await res.json().then(data => setTodayRepairments(data.todaysRepairments[0].Num))
+    const json = await res.json().then(data => setTodayRepairments(data?.todaysRepairments && data.todaysRepairments[0].Num))
   }, [])
 
   useEffect(async () => {
     const res = await fetch("http://localhost:5000/api/getDailyEarnings/")
-    const json = await res.json().then(data => setDailyEarning(data.earnings[0].dailyEarning))
+    const json = await res.json().then(data => setDailyEarning(data?.earnings && data.earnings[0].dailyEarning))
   }, [])
 
   useEffect(async () => {
