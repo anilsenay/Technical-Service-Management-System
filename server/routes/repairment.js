@@ -50,7 +50,7 @@ router.put("/update", (req, res) => {
   var value = req.body.value;
   var isPartWaited = req.body.isPartWaited;
   var repairmentEndDate = req.body.repairmentEndDate;
-  var repairmentEndDateReal = new Date(`${repairmentEndDate} GMT-000`);
+  console.log(repairmentEndDate);
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("repairmentID", sql.Int, repairmentID || null);
@@ -60,11 +60,7 @@ router.put("/update", (req, res) => {
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value);
     request.input("isPartWaited", sql.Bit, isPartWaited);
-    request.input(
-      "repairmentEndDate",
-      sql.DateTime,
-      repairmentEndDateReal || null
-    );
+    request.input("repairmentEndDate", sql.DateTime, repairmentEndDate || null);
     request.execute("sp_updateRepairment", (err, result) => {
       if (err) {
         console.log(err);
@@ -88,9 +84,7 @@ router.put("/updateEmployee", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.query(
-      `UPDATE REPAIRMENT
-                   SET employeeID=${employeeID}
-                   WHERE ID=${repairmentID}`,
+      `UPDATE REPAIRMENT SET employeeID=${employeeID} WHERE ID=${repairmentID}`,
       (err, result) => {
         if (err) {
           console.log(err);
