@@ -8,9 +8,12 @@ router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.query(
-      `SELECT p.*, e.firstName + ' ' + e.lastName accountantName, pm.paymentMethod methodName 
-       FROM PAYMENT p inner join EMPLOYEE e on p.accountantID=e.ID 
-                      inner join PAYMENT_METHOD pm on p.paymentMethod=pm.ID`,
+      `SELECT p.*, e.firstName + ' ' + e.lastName accountantName, pm.paymentMethod methodName, r.ID repairmentID, r.deviceID, r.repairmentStartDate, r.repairmentEndDate, r.remark, r.employeeID, c.firstName, c.lastName, c.phoneNumber, ad.streetName, ad.streetNumber, ad.city, ad.country, ad.zipcode
+      FROM PAYMENT p inner join EMPLOYEE e on p.accountantID=e.ID 
+                     inner join PAYMENT_METHOD pm on p.paymentMethod=pm.ID
+           inner join REPAIRMENT r on r.ID=p.repairmentID
+           inner join CUSTOMER c on c.ID=r.customerID
+           inner join ADDRESS ad on ad.customerID=c.ID`,
       (err, recordsets) => {
         if (err) {
           console.log(err);
