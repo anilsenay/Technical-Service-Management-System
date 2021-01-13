@@ -18,7 +18,7 @@ export default function ListParts({ data }) {
   const columnSizes = [0.5, 2.5, 1.5, 1.2, 1, 1, 1];
   console.log(data);
   return (
-    <Layout>
+    <Layout title="Part List">
       <FilterBar size={data?.length || 0} />
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {

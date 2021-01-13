@@ -65,7 +65,7 @@ export default function dashboard() {
   }, [])
 
   return (
-    <Layout>
+    <Layout title="Dashboard">
 
       <div className={styles.container}>
         <div className={styles.contentContainer}>
@@ -80,7 +80,7 @@ export default function dashboard() {
             </Box>
             <Box>
               <h4>Daily Pending Repairments</h4>
-              <span className={styles.boxCounters}>{pendingRepairments.length || 0}</span>
+              <span className={styles.boxCounters}>{pendingRepairments?.length || 0}</span>
             </Box>
           </div>
           <div className={styles.recentRepairments}>

@@ -19,7 +19,7 @@ export default function ListPayments({ data }) {
   const columnSizes = [0.7, 1.7, 2, 2, 1.5, 2];
   console.log(data);
   return (
-    <Layout>
+    <Layout title="Payment List">
       <FilterBar size={data?.length || 0} />
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {

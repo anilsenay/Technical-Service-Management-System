@@ -84,7 +84,7 @@ export default function AddPart() {
     },
   });
   return (
-    <Layout>
+    <Layout title="Add New Part">
       <main className={styles.container}>
         <form key="account-form" onSubmit={handleSubmit}>
           <div className={styles.content}>

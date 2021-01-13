@@ -174,7 +174,7 @@ export default function CreateRepairment() {
   }, [])
   console.log(values.type, values.category, values.specification)
   return (
-    <Layout>
+    <Layout title="Create Repairment">
       <main className={styles.container}>
         <form key="account-form" onSubmit={handleSubmit}>
           <div className={styles.content}>

@@ -50,7 +50,7 @@ export default function ListOrders({ data }) {
   }
 
   return (
-    <Layout>
+    <Layout title="Order List">
       <FilterBar size={data?.length || 0} />
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {

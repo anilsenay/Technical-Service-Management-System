@@ -82,7 +82,7 @@ export default function NewPayment() {
     },
   });
   return (
-    <Layout>
+    <Layout title="New Payment">
       <main className={styles.container}>
         <form key="account-form" onSubmit={handleSubmit}>
           <div className={styles.content}>
