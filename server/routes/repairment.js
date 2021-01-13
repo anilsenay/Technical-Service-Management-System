@@ -55,7 +55,7 @@ router.put("/update", (req, res) => {
     var request = new sql.Request();
     request.input("repairmentID", sql.Int, repairmentID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
-    request.input("isInWarranty", sql.Bit, isInWarranty);
+    request.input("isInWarranty", sql.Bit, isInWarranty || 0);
     request.input("remark", sql.NVarChar(100), remark || "NULL");
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value);
@@ -180,7 +180,7 @@ router.put("/update", (req, res) => {
     var request = new sql.Request();
     request.input("repairmentID", sql.Int, repairmentID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
-    request.input("isInWarranty", sql.Bit, isInWarranty || null);
+    request.input("isInWarranty", sql.Bit, isInWarranty || 0);
     request.input("remark", sql.NVarChar(100), remark || "NULL");
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value || null);
@@ -243,11 +243,10 @@ router.get("/cost/:id", (req, res) => {
 
 // Insert a new repairment.all
 router.post("/insert", (req, res) => {
-  var caseID = req.body.caseID;
   var employeeID = req.body.employeeID;
   var isInWarranty = req.body.isInWarranty;
   var remark = req.body.remark;
-  var value = req.body.value;
+  var value = req.body.solution;
   var isTech = req.body.isTech;
   var isPartWaited = req.body.isPartWaited;
   //Customer Device
@@ -260,28 +259,28 @@ router.post("/insert", (req, res) => {
   var physicalCondition = req.body.physicalCondition;
   var proofOfPurchase = req.body.proofOfPurchase;
   //Customer
-  var firstName = req.body.firstName;
-  var lastName = req.body.lastName;
-  var phoneNumber = req.body.phoneNumber;
+  var firstName = req.body.customerName;
+  var lastName = req.body.customerSurname;
+  var phoneNumber = req.body.phone;
   var streetName = req.body.streetName;
   var streetNumber = req.body.streetNumber;
   var city = req.body.city;
-  var county = req.body.county;
+  var county = req.body.country;
   var zipcode = req.body.zipcode;
   // Case
-  var caseType = req.body.caseType;
-  var caseCategory = req.body.caseCategory;
-  var caseSpec = req.body.caseSpec;
-  var caseDesc = req.body.caseDesc;
+  var caseType = req.body.type;
+  var caseCategory = req.body.category;
+  var caseSpec = req.body.specification;
+  var caseDesc = req.body.description;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("caseID", sql.Int, caseID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
-    request.input("isInWarranty", sql.Bit, isInWarranty);
+    request.input("isInWarranty", sql.Bit, isInWarranty || 0);
     request.input("remark", sql.NVarChar(100), remark || "NULL");
-    request.input("value", sql.TinyInt, value || null);
-    request.input("isTech", sql.Bit, isTech || null);
-    request.input("isPartWaited", sql.Bit, isPartWaited || null);
+    request.input("value", sql.TinyInt, value || 0);
+    request.input("isTech", sql.Bit, isTech || 0);
+    request.input("isPartWaited", sql.Bit, isPartWaited || 0);
     //Customer Device
     request.input("deviceID", sql.BigInt, deviceID || null);
     request.input("customerId", sql.Int, customerId || null);
@@ -294,7 +293,7 @@ router.post("/insert", (req, res) => {
       sql.NVarChar(100),
       physicalCondition || "NULL"
     );
-    request.input("proofOfPurchase", sql.Bit, proofOfPurchase || null);
+    request.input("proofOfPurchase", sql.Bit, proofOfPurchase || 0);
     // Customer
     request.input("firstName", sql.NVarChar(50), firstName || "NULL");
     request.input("lastName", sql.NVarChar(50), lastName || "NULL");
