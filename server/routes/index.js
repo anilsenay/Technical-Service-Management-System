@@ -17,6 +17,11 @@ router.use(
   require("./views/getRecentRepairments")
 );
 
+router.use(
+  "/api/getTodaysRepairments",
+  require("./views/getTodaysRepairments")
+);
+
 router.use("/api/getSmartStats", require("./views/getSmartStats"));
 
 router.use("/api/getTechnicianStats", require("./views/getTechnicianStats"));
