@@ -45,9 +45,9 @@ router.get("/", (req, res) => {
             },
             case: {
               caseID: item.caseID,
-              caseType: item.caseType,
-              caseCategory: item.caseCategory,
-              caseSpecification: item.caseSpecification,
+              caseType: item.type,
+              caseCategory: item.category,
+              caseSpecification: item.specification,
               caseDescription: item.caseDescription,
             },
             employee: {
