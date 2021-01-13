@@ -45,18 +45,27 @@ router.get("/info", (req, res) => {
           return res.status(400).send({ error: { err } });
         }
         categories = recordsets.recordset;
-        request.query("SELECT * FROM dbo.[CASE_SPECIFICATION]", (err, recordsets) => {
-          if (err) {
-            console.log(err);
-            if (err.code === "ENOCONN")
-              return res.status(503).send({ error: { err } });
-            return res.status(400).send({ error: { err } });
-          }
+        request.query(
+          "SELECT * FROM dbo.[CASE_SPECIFICATION]",
+          (err, recordsets) => {
+            if (err) {
+              console.log(err);
+              if (err.code === "ENOCONN")
+                return res.status(503).send({ error: { err } });
+              return res.status(400).send({ error: { err } });
+            }
 
-          res.setHeader("Content-Type", "application/json");
-          sql.close();
-          return res.status(200).send({ types, categories, specifications: recordsets.recordset }); // Result in JSON format
-        });
+            res.setHeader("Content-Type", "application/json");
+            sql.close();
+            return res
+              .status(200)
+              .send({
+                types,
+                categories,
+                specifications: recordsets.recordset,
+              }); // Result in JSON format
+          }
+        );
       });
     });
   });
@@ -75,7 +84,7 @@ router.put("/update", (req, res) => {
     request.input("caseType", sql.TinyInt, caseType || null);
     request.input("caseCategory", sql.TinyInt, caseCategory || null);
     request.input("caseSpec", sql.TinyInt, caseSpec || null);
-    request.input("caseDesc", sql.NVarChar(100), caseDesc || "NULL");
+    request.input("caseDesc", sql.NVarChar(100), caseDesc || null);
     request.execute("sp_updateCase", (err, result) => {
       if (err) {
         console.log(err);
@@ -104,7 +113,7 @@ router.post("/insert", (req, res) => {
     request.input("caseType", sql.TinyInt, caseType || null);
     request.input("caseCategory", sql.TinyInt, caseCategory || null);
     request.input("caseSpec", sql.TinyInt, caseSpec || null);
-    request.input("caseDesc", sql.NVarChar(100), caseDesc || "NULL");
+    request.input("caseDesc", sql.NVarChar(100), caseDesc || null);
     request.execute("sp_insertNewCase", (err, result) => {
       if (err) {
         console.log(err);

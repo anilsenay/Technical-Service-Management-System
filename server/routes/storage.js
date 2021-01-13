@@ -50,9 +50,9 @@ router.post("/insertNewPart", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("partID", sql.BigInt, partID || null);
-    request.input("partName", sql.NVarChar(50), partName || "NULL");
-    request.input("partModel", sql.NVarChar(50), partModel || "NULL");
-    request.input("partColor", sql.NVarChar(10), partColor || "NULL");
+    request.input("partName", sql.NVarChar(50), partName || null);
+    request.input("partModel", sql.NVarChar(50), partModel || null);
+    request.input("partColor", sql.NVarChar(10), partColor || null);
     request.input("partPrice", sql.SmallMoney, partPrice);
     request.input("quantity", sql.SmallInt, quantity || null);
     request.input("boxNumber", sql.SmallInt, boxNumber || null);
