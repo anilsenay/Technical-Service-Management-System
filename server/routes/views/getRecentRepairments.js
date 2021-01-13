@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.query(
-      `SELECT * from view_getRecentRepairments`,
+      `SELECT TOP 10 * from view_getDetailedRepairments ORDER BY repairmentStartDate desc`,
       (err, recordsets) => {
         if (err) {
           console.log(err);
