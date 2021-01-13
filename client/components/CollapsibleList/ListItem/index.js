@@ -3,17 +3,19 @@ import { DownArrowIcon } from "../../Icons";
 
 import styles from "./item.module.scss";
 
-export default function ListItem({ sizes, children }) {
+export default function ListItem({ sizes, noDetails, children }) {
   const [toggleMenu, setToggleMenu] = useState(false);
   return (
     <div className={styles.container}>
       <div className={styles.column}>
-        <a
-          className={toggleMenu ? styles.arrow_up : styles.arrow_down}
-          onClick={() => setToggleMenu(!toggleMenu)}
-        >
-          <DownArrowIcon width={14} height={14} fill="#94969C" />
-        </a>
+        {!noDetails &&
+          <a
+            className={toggleMenu ? styles.arrow_up : styles.arrow_down}
+            onClick={() => setToggleMenu(!toggleMenu)}
+          >
+            <DownArrowIcon width={14} height={14} fill="#94969C" />
+          </a>
+        }
         <div
           className={styles.items}
           style={{
@@ -36,14 +38,14 @@ ListItem.Item = ({ isId, children }) => {
   return <span className={isId && styles.primary}>{children}</span>;
 };
 
-ListItem.Header = ({ data, sizes }) => {
+ListItem.Header = ({ data, noDetails, sizes }) => {
   return (
     <div
       className={styles.container}
       style={{ border: 0, margin: 0, backgroundColor: "transparent" }}
     >
       <div className={styles.column}>
-        <div style={{ width: 48, height: 26 }}></div>
+        {!noDetails && <div style={{ width: 48, height: 26 }}></div>}
         <div
           className={styles.items}
           style={{

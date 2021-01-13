@@ -1,9 +1,88 @@
 @import "../../styles/colors.scss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
+
 
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
   height: 100%;
   width: 100%;
   background-color: $light-purple;
   min-height: 100vh;
+  padding-bottom: 30px;
+
+  .contentContainer{
+    .stats{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .recentRepairments{
+
+    }
+  }
+
+  .userContainer {
+    .welcomeBack {
+      background-color: #fff;
+      margin-bottom: 20px;
+      padding: 24px;
+      border-radius: 10px;
+      h2 {
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        color: $dark-blue;
+      }
+    }
+  }
+}
+
+.box {
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 24px;
+  border-radius: 10px;
+
+  h3{
+    color: $dark-blue;
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  h4{
+    color: $grey;
+    margin: 0;
+    padding-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .boxCounters {
+    font-size: 24px;
+    font-weight: bold;
+    color: $dark-blue;
+  }
+  button {
+    background-color: #e6ebf5;
+    border: 0;
+    padding: 8px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 4px;
+    color: $dark-blue;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  p {
+    font-size: 14px;
+    .days {
+        font-weight: bold;
+        margin-right: 6px;
+    }
+  }
+  
 }

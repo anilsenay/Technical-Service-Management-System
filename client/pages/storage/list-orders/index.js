@@ -7,6 +7,7 @@ import { format } from 'date-fns'
 import FilterBar from "../../../components/CollapsibleList/FilterBar";
 
 import styles from './list.module.scss';
+import { useRouter } from "next/router";
 
 export default function ListOrders({ data }) {
   const [orderedParts, setOrderedParts] = useState([]);
@@ -18,11 +19,36 @@ export default function ListOrders({ data }) {
   ];
   const columnSizes = [0.5, 1.7, 2, 1.2, 1.5];
 
+  const router = useRouter();
+
   useEffect(async () => {
     const res = await fetch('http://localhost:5000/api/orders/getOrderedParts')
     const json = await res.json().then(data => setOrderedParts(data.orders))
   }, [])
-  console.log(orderedParts)
+
+  const confirm = (orderID, isConfirmed) => {
+    fetch('http://localhost:5000/api/orders/updateConfirm', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderID, isConfirmed }),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        console.log(response);
+        if (!response.ok) {
+          const error = (data && data.error) || response.status;
+          throw new Error(data.error);
+        }
+        if (response.ok && data) {
+          console.log(data)
+          router.push("/storage/list-orders");
+        }
+      })
+      .catch((e) => {
+        console.log(e.toString());
+      });
+  }
+
   return (
     <Layout>
       <FilterBar size={data?.length || 0} />
@@ -53,6 +79,9 @@ export default function ListOrders({ data }) {
                         </>
                       )
                   })}
+                  <button onClick={() => confirm(item.orderID, item.isConfirmed ? 0 : 1)}>
+                    {item.isConfirmed ? "Cancel Confirm" : "Confirm"}
+                  </button>
                 </div>
               </ListItem.Content>
             </ListItem>
