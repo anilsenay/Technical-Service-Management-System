@@ -83,11 +83,14 @@ const schema = yup.object().shape({
   zipcode: yup
     .string(),
   type: yup
-    .number(),
+    .number().required("* You must select case details correctly!")
+    .typeError("* You must select case details correctly!"),
   category: yup
-    .number(),
+    .number().required("* You must select case details correctly!")
+    .typeError("* You must select case details correctly!"),
   specification: yup
-    .number(),
+    .number().required("* You must select case details correctly!")
+    .typeError("* You must select case details correctly!"),
   solution: yup
     .string(),
   description: yup
@@ -128,9 +131,9 @@ export default function CreateRepairment() {
       city: "İstanbul",
       country: "Türkiye",
       zipcode: "",
-      type: 1,
-      category: 1,
-      specification: 1,
+      type: null,
+      category: null,
+      specification: null,
       solution: 1,
       description: "",
       remark: "",
@@ -169,7 +172,7 @@ export default function CreateRepairment() {
     const res = await fetch('http://localhost:5000/api/cases/info')
     const json = await res.json().then(data => setCases(data))
   }, [])
-  console.log(errors)
+  console.log(values.type, values.category, values.specification)
   return (
     <Layout>
       <main className={styles.container}>
@@ -382,6 +385,7 @@ export default function CreateRepairment() {
               <label>Case Type</label>
               <div className={styles.selectContainer}>
                 <select id="type" name="type" onChange={handleChange}>
+                  <option value={null}>Select a type</option>
                   {cases?.types?.map(item => {
                     return <option value={+item.ID}>{item.type}</option>
                   })}
@@ -393,6 +397,7 @@ export default function CreateRepairment() {
               <label>Case Category</label>
               <div className={styles.selectContainer}>
                 <select id="category" name="category" onChange={handleChange}>
+                  <option value={null}>Select a category</option>
                   {cases?.categories?.map(item => {
                     return values.type == item.caseType && <option value={+item.ID}>{item.category}</option>
                   })}
@@ -403,7 +408,8 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Case Specification</label>
               <div className={styles.selectContainer}>
-                <select id="specification" name="specification" onChange={handleChange}>
+                <select id="specification" name="specification" onChange={handleChange} >
+                  <option value={null} >Select a specification</option>
                   {cases?.specifications?.map(item => {
                     return values.category == item.caseCategory && <option value={+item.ID}>{item.specification}</option>
                   })}
@@ -442,6 +448,12 @@ export default function CreateRepairment() {
               {errors.remark}
             </p>
           )}
+          {(errors.type || errors.category || errors.specification) && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              {errors.type}
+            </p>
+          )}
+
           {postError && (
             <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
               Some error occurs when creating new repairtment!
