@@ -82,14 +82,15 @@ router.put("/update", (req, res) => {
 });
 
 // Update the repairment's employee.
-router.put("/updateEmployee/:employeeID", (req, res) => {
-  var employeeID = req.params.employeeID;
+router.put("/updateEmployee", (req, res) => {
+  var employeeID = req.body.employeeID;
+  var repairmentID = req.body.repairmentID;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.query(
       `UPDATE REPAIRMENT
                    SET employeeID=${employeeID}
-                  WHERE ID=@repairmentID`,
+                   WHERE ID=${repairmentID}`,
       (err, result) => {
         if (err) {
           console.log(err);
@@ -103,7 +104,7 @@ router.put("/updateEmployee/:employeeID", (req, res) => {
 
         return res
           .status(200)
-          .send({ updatedEmployeeRepairment: { ...req.params.employeeID } });
+          .send({ updatedEmployeeRepairment: { ...req.body } });
       }
     );
   });
