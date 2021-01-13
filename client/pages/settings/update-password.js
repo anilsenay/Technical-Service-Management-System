@@ -6,6 +6,9 @@ import Button from "../../components/Button";
 import styles from "./settings.module.scss";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import globalHook from "../../hooks/global.hook";
+import { useRouter } from "next/router";
+import md5 from "md5";
 
 const schema2 = yup.object().shape({
   currentPassword: yup
@@ -22,6 +25,11 @@ const schema2 = yup.object().shape({
 });
 
 export default function UpdatePassword() {
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
+  const router = useRouter();
+
   const [passwordError, setError] = useState(null);
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
@@ -32,6 +40,30 @@ export default function UpdatePassword() {
     validationSchema: schema2,
     onSubmit: (values) => {
       console.log(values);
+      const currentPassword = md5(values.currentPassword);
+      const newPassword = md5(values.newPassword);
+      const confirmPassword = md5(values.confirmPassword);
+      fetch('http://localhost:5000/api/employees/updatePassword', {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: user?.username, oldPassword: currentPassword, newPassword }),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...data.user, password: newPassword }));
+            router.push("");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
     },
   });
 
@@ -43,6 +75,7 @@ export default function UpdatePassword() {
           <span>Current Password</span>
           <Input
             name="currentPassword"
+            type="password"
             onChange={handleChange}
             placeholder="Current Password"
             noMargin
@@ -53,6 +86,7 @@ export default function UpdatePassword() {
           <span>New Password</span>
           <Input
             name="newPassword"
+            type="password"
             onChange={handleChange}
             placeholder="New Password"
             noMargin
@@ -64,6 +98,7 @@ export default function UpdatePassword() {
           <span>Confirm New Password</span>
           <Input
             name="confirmPassword"
+            type="password"
             onChange={handleChange}
             placeholder="Confirm New Password"
             noMargin
@@ -92,7 +127,7 @@ export default function UpdatePassword() {
             {passwordError}
           </p>
         )}
-        <Button type="submit">Confirm</Button>
+        <Button type="submit" name="password_button" value="Update Password">Confirm</Button>
       </form>
     </div>
   );
