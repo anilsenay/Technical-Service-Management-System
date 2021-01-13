@@ -31,7 +31,6 @@ export default function dashboard() {
 
   const router = useRouter();
 
-
   useEffect(async () => {
     const res = await fetch("http://localhost:5000/api/employees/availability/" + (user?.ID || "1"))
     const json = await res.json().then(data => setAvailabilities(data.availibilities))
@@ -47,9 +46,6 @@ export default function dashboard() {
     const json = await res.json().then(data => setRecentRepairments(data.detailedRepairments))
   }, [])
 
-  console.log(repairments)
-  console.log(recentRepairments)
-  console.log(availabilities)
   return (
     <Layout>
 
