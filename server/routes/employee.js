@@ -211,12 +211,12 @@ router.post("/availability/insert/", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("employeeID", sql.TinyInt, employeeID || null);
-    request.input("monday", sql.Bit, monday || null);
-    request.input("tuesday", sql.Bit, tuesday || null);
-    request.input("wednesday", sql.Bit, wednesday || null);
-    request.input("thursday", sql.Bit, thursday || null);
-    request.input("friday", sql.Bit, friday || null);
-    request.input("saturday", sql.Bit, saturday || null);
+    request.input("monday", sql.Bit, monday || 0);
+    request.input("tuesday", sql.Bit, tuesday || 0);
+    request.input("wednesday", sql.Bit, wednesday || 0);
+    request.input("thursday", sql.Bit, thursday || 0);
+    request.input("friday", sql.Bit, friday || 0);
+    request.input("saturday", sql.Bit, saturday || 0);
     request.input("startHour", sql.Time, startDate || null);
     request.input("endHour", sql.Time, endDate || null);
     request.execute("sp_InsertNewEmployeeAvailability", (err, result) => {
