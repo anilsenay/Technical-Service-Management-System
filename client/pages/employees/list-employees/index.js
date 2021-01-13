@@ -39,7 +39,7 @@ export default function ListEmployees({ data }) {
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {
           return (
-            <ListItem sizes={columnSizes}>
+            <ListItem sizes={columnSizes} key={item.ID}>
               <ListItem.Columns>
                 <ListItem.Item isId>{item.ID}</ListItem.Item>
                 <ListItem.Item>{item.firstName} {item.lastName}</ListItem.Item>

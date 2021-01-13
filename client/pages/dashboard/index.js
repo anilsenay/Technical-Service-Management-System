@@ -132,7 +132,7 @@ export default function dashboard() {
             <h3>My Last Repairments</h3>
             {repairments.length === 0 ? <p>No repairment found</p> :
               repairments.map(item => {
-                return <div>
+                return <div key={item.ID}>
                   <p style={{ display: "flex", alignItems: "center" }}>
                     <div style={{ width: 8, height: 8, borderRadius: 8, marginRight: 8, backgroundColor: item.repairmentEndDate ? "green" : "red" }} />
                     <span className={styles.days}>Model:</span>{item.device.model}

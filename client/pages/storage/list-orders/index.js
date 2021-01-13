@@ -55,7 +55,7 @@ export default function ListOrders({ data }) {
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {
           return (
-            <ListItem sizes={columnSizes}>
+            <ListItem sizes={columnSizes} key={item.orderID}>
               <ListItem.Columns>
                 <ListItem.Item isId>{item.orderID}</ListItem.Item>
                 <ListItem.Item>{format(new Date(item.orderDate), "dd-MM-yyyy HH:mm")}</ListItem.Item>

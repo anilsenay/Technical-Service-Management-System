@@ -54,7 +54,7 @@ export default function PendingRepairments({ data }) {
             <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
                 {data.map(item => {
                     return (
-                        <ListItem sizes={columnSizes}>
+                        <ListItem sizes={columnSizes} key={item.ID}>
                             <ListItem.Columns>
                                 <ListItem.Item isId>{item.ID}</ListItem.Item>
                                 <ListItem.Item>{format(new Date(item.repairmentStartDate), "dd-MM-yyyy HH:mm")}</ListItem.Item>
