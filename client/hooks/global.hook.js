@@ -28,6 +28,7 @@ const globalHook = () => {
         }
         console.log(data.user);
         if (response.ok && data.user) {
+          typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify(data.user));
           globalDispatch({
             type: "SET_USER_ERROR",
             payload: null,
@@ -48,6 +49,7 @@ const globalHook = () => {
   };
 
   const logout = () => {
+    typeof window !== 'undefined' && localStorage.removeItem('user');
     globalDispatch({
       type: "SET_LOGGED_USER",
       payload: null,
