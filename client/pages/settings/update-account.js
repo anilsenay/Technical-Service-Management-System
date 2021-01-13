@@ -6,6 +6,8 @@ import Button from "../../components/Button";
 import styles from "./settings.module.scss";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import globalHook from "../../hooks/global.hook";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
   name: yup
@@ -27,17 +29,42 @@ const schema = yup.object().shape({
 });
 
 export default function UpdateAccount() {
-  const user = null;
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
+  const router = useRouter();
+
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
-      email: "",
-      phone: "",
+      name: user?.firstName,
+      surname: user?.lastName,
+      email: user?.email,
+      phone: user?.phoneNumber,
     },
     validationSchema: schema,
     onSubmit: (values) => {
       console.log(values);
+      fetch('http://localhost:5000/api/employees/update', {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: user.username, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...user, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }));
+            router.push("");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
     },
   });
   console.log(errors);
@@ -50,7 +77,7 @@ export default function UpdateAccount() {
           <Input
             name="name"
             onChange={handleChange}
-            defaultValue={user?.name}
+            defaultValue={user?.firstName}
             noMargin
             placeholder="Name"
             error={errors.name}
@@ -62,7 +89,7 @@ export default function UpdateAccount() {
           <Input
             name="surname"
             onChange={handleChange}
-            defaultValue={user?.surname}
+            defaultValue={user?.lastName}
             noMargin
             placeholder="Surname"
             error={errors.surname}

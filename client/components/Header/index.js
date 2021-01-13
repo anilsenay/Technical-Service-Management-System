@@ -42,7 +42,7 @@ export default function Header({ title }) {
           />
         </div>
         <span className={styles.userText}>
-          Hi, {user ? user.firstName : "Guest"}
+          {user ? user.firstName : "Guest"}
         </span>
         <div className={styles.photoContainer}>
           <img

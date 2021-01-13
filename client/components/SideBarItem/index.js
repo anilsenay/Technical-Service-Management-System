@@ -12,8 +12,9 @@ export default function SideBarItem({ icon, text, link, isActive, children }) {
   const router = useRouter();
 
   useEffect(() => {
-    router?.pathname.includes(link) && setToggleMenu(true);
+    router?.pathname.includes(link) && link !== "" && setToggleMenu(true);
   }, []);
+
   return (
     <>
       <div
@@ -31,6 +32,7 @@ export default function SideBarItem({ icon, text, link, isActive, children }) {
             style={{
               paddingLeft: isActive ? "57px" : "60px",
             }}
+            onClick={() => { link === "" && setToggleMenu(!toggleMenu) }}
           >
             <SidebarIcon
               icon={icon}
@@ -67,8 +69,8 @@ export default function SideBarItem({ icon, text, link, isActive, children }) {
             );
           })
         ) : (
-          <div className={styles.listElement}>{children}</div>
-        ))}
+            <div className={styles.listElement}>{children}</div>
+          ))}
     </>
   );
 }

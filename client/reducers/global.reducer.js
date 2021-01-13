@@ -1,5 +1,5 @@
 const globalInitialState = {
-  user: null,
+  user: (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user'))) || null,
   errors: {
     user: null,
   },

@@ -387,7 +387,7 @@ export default function CreateRepairment() {
                 <select id="type" name="type" onChange={handleChange}>
                   <option value={null}>Select a type</option>
                   {cases?.types?.map(item => {
-                    return <option value={+item.ID}>{item.type}</option>
+                    return <option value={+item.ID} key={item.ID}>{item.type}</option>
                   })}
                 </select>
                 <DownArrow />
@@ -399,7 +399,7 @@ export default function CreateRepairment() {
                 <select id="category" name="category" onChange={handleChange}>
                   <option value={null}>Select a category</option>
                   {cases?.categories?.map(item => {
-                    return values.type == item.caseType && <option value={+item.ID}>{item.category}</option>
+                    return values.type == item.caseType && <option value={+item.ID} key={item.ID}>{item.category}</option>
                   })}
                 </select>
                 <DownArrow />
@@ -411,7 +411,7 @@ export default function CreateRepairment() {
                 <select id="specification" name="specification" onChange={handleChange} >
                   <option value={null} >Select a specification</option>
                   {cases?.specifications?.map(item => {
-                    return values.category == item.caseCategory && <option value={+item.ID}>{item.specification}</option>
+                    return values.category == item.caseCategory && <option value={+item.ID} key={item.ID}>{item.specification}</option>
                   })}
                 </select>
                 <DownArrow />

@@ -23,7 +23,7 @@ export default function ListParts({ data }) {
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {
           return (
-            <ListItem sizes={columnSizes}>
+            <ListItem sizes={columnSizes} key={item.part.partID}>
               <ListItem.Columns>
                 <ListItem.Item isId>{item.part.partID}</ListItem.Item>
                 <ListItem.Item >{item.part.partName}</ListItem.Item>
