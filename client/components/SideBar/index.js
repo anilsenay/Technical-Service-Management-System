@@ -11,7 +11,7 @@ export default function SideBar() {
   const router = useRouter();
   return (
     <aside className={styles.container}>
-      <section className={styles.logo}>
+      <section className={styles.logo} onClick={() => router.push("/dashboard")}>
         <Logo width={251} height={33} />
       </section>
       <section className={styles.itemContainer}>
