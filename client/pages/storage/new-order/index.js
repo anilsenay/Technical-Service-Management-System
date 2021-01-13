@@ -82,7 +82,7 @@ export default function NewOrder() {
     },
   });
   return (
-    <Layout>
+    <Layout title="New Order">
       <main className={styles.container}>
         <form key="account-form" onSubmit={handleSubmit}>
           <div className={styles.content}>

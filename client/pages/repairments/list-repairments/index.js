@@ -19,7 +19,7 @@ export default function ListRepairments({ data }) {
   const columnSizes = [0.5, 1.7, 1.2, 1.8, 1.5, 1.5, 3];
   console.log(data)
   return (
-    <Layout>
+    <Layout title="Repairment List">
       <FilterBar size={data?.length || 0} />
       <CollapsibleList size={data?.length || 0} columns={columns} columnSizes={columnSizes}>
         {data.map(item => {

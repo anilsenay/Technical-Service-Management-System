@@ -42,7 +42,7 @@ export default function AssignedRepairments() {
 
   console.log(data)
   return (
-    <Layout>
+    <Layout title="Assigned Repairments">
       {
         data === undefined ? <div style={{ marginTop: 20, marginRight: 48 }}><Loading /></div> :
           (

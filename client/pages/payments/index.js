@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 
 export default function Payments() {
   return (
-    <Layout>
+    <Layout title="Payments">
       <div>Payments Root</div>
     </Layout>
   );

@@ -103,7 +103,7 @@ export default function RegisterEmployee() {
     },
   });
   return (
-    <Layout>
+    <Layout title="Register Employee">
       <main className={styles.container}>
         <form key="account-form" onSubmit={handleSubmit}>
           <div className={styles.content}>
