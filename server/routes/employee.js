@@ -49,8 +49,8 @@ router.get("/repairments", (req, res) => {
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
     request.input("id", sql.TinyInt, req.query.id || null);
-    request.input("firstName", sql.NVarChar(50), req.query.firstName || "NULL");
-    request.input("lastName", sql.NVarChar(50), req.query.lastName || "NULL");
+    request.input("firstName", sql.NVarChar(50), req.query.firstName || null);
+    request.input("lastName", sql.NVarChar(50), req.query.lastName || null);
     request.execute("sp_getEmployeeRepairments", (err, result) => {
       if (err) {
         console.log(err);
@@ -241,9 +241,9 @@ router.put("/updatePassword", (req, res) => {
   var newPassword = req.body.newPassword;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("username", sql.NVarChar(30), username || "NULL");
-    request.input("oldPassword", sql.NVarChar(32), oldPassword || "NULL");
-    request.input("newPassword", sql.NVarChar(32), newPassword || "NULL");
+    request.input("username", sql.NVarChar(30), username || null);
+    request.input("oldPassword", sql.NVarChar(32), oldPassword || null);
+    request.input("newPassword", sql.NVarChar(32), newPassword || null);
     request.execute("sp_updatePassword", (err, result) => {
       if (err) {
         console.log(err);
@@ -269,11 +269,11 @@ router.put("/update", (req, res) => {
   var phoneNumber = req.body.phoneNumber;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("username", sql.NVarChar(30), username || "NULL");
-    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
-    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
-    request.input("email", sql.NVarChar(100), email || "NULL");
-    request.input("phoneNumber", sql.NVarChar(50), phoneNumber || "NULL");
+    request.input("username", sql.NVarChar(30), username || null);
+    request.input("firstName", sql.NVarChar(50), firstName || null);
+    request.input("lastName", sql.NVarChar(50), lastName || null);
+    request.input("email", sql.NVarChar(100), email || null);
+    request.input("phoneNumber", sql.NVarChar(50), phoneNumber || null);
     request.execute("sp_updateEmployee", (err, result) => {
       if (err) {
         console.log(err);
@@ -326,16 +326,16 @@ router.post("/insert", (req, res) => {
   var type = req.body.type;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
-    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
-    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || "NULL");
-    request.input("username", sql.NVarChar(30), username || "NULL");
-    request.input("password", sql.NVarChar(32), password || "NULL");
-    request.input("email", sql.NVarChar(100), email || "NULL");
-    request.input("address", sql.NVarChar(150), address || "NULL");
-    request.input("dateOfBirth", sql.Date, dateOfBirth || "NULL");
-    request.input("startDate", sql.Date, startDate || "NULL");
-    request.input("type", sql.NVarChar(32), type || "NULL");
+    request.input("firstName", sql.NVarChar(50), firstName || null);
+    request.input("lastName", sql.NVarChar(50), lastName || null);
+    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || null);
+    request.input("username", sql.NVarChar(30), username || null);
+    request.input("password", sql.NVarChar(32), password || null);
+    request.input("email", sql.NVarChar(100), email || null);
+    request.input("address", sql.NVarChar(150), address || null);
+    request.input("dateOfBirth", sql.Date, dateOfBirth || null);
+    request.input("startDate", sql.Date, startDate || null);
+    request.input("type", sql.NVarChar(32), type || null);
     request.execute("sp_insertNewEmployee", (err, result) => {
       if (err) {
         console.log(err);

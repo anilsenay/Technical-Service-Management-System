@@ -113,11 +113,7 @@ router.post("/insert", (req, res) => {
     var request = new sql.Request();
     request.input("employeeID", sql.TinyInt, employeeID || null);
     request.input("partID_1", sql.BigInt, partID_1 || null);
-    request.input(
-      "partID_1_quantity",
-      sql.SmallInt,
-      partID_1_quantity || "NULL"
-    );
+    request.input("partID_1_quantity", sql.SmallInt, partID_1_quantity || null);
     request.input("partID_2", sql.BigInt, partID_2 || null);
     request.input("partID_2_quantity", sql.SmallInt, partID_2_quantity || null);
     request.input("partID_3", sql.BigInt, partID_3 || null);
