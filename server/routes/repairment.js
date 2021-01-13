@@ -56,7 +56,7 @@ router.put("/update", (req, res) => {
     request.input("repairmentID", sql.Int, repairmentID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
     request.input("isInWarranty", sql.Bit, isInWarranty || 0);
-    request.input("remark", sql.NVarChar(100), remark || "NULL");
+    request.input("remark", sql.NVarChar(100), remark || null);
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value);
     request.input("isPartWaited", sql.Bit, isPartWaited);
@@ -181,7 +181,7 @@ router.put("/update", (req, res) => {
     request.input("repairmentID", sql.Int, repairmentID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
     request.input("isInWarranty", sql.Bit, isInWarranty || 0);
-    request.input("remark", sql.NVarChar(100), remark || "NULL");
+    request.input("remark", sql.NVarChar(100), remark || null);
     request.input("partIDNeedChange", sql.BigInt, partIDNeedChange || null);
     request.input("value", sql.TinyInt, value || null);
     request.input("isPartWaited", sql.Bit, isPartWaited || null);
@@ -251,7 +251,6 @@ router.post("/insert", (req, res) => {
   var isPartWaited = req.body.isPartWaited;
   //Customer Device
   var deviceID = req.body.deviceID;
-  var customerId = req.body.customerId;
   var model = req.body.model;
   var colorCode = req.body.colorCode;
   var serialCode = req.body.serialCode;
@@ -274,35 +273,33 @@ router.post("/insert", (req, res) => {
   var caseDesc = req.body.description;
   sql.connect(sqlConfig, () => {
     var request = new sql.Request();
-    request.input("caseID", sql.Int, caseID || null);
     request.input("employeeID", sql.TinyInt, employeeID || null);
     request.input("isInWarranty", sql.Bit, isInWarranty || 0);
-    request.input("remark", sql.NVarChar(100), remark || "NULL");
+    request.input("remark", sql.NVarChar(100), remark || null);
     request.input("value", sql.TinyInt, value || 0);
     request.input("isTech", sql.Bit, isTech || 0);
     request.input("isPartWaited", sql.Bit, isPartWaited || 0);
     //Customer Device
     request.input("deviceID", sql.BigInt, deviceID || null);
-    request.input("customerId", sql.Int, customerId || null);
-    request.input("model", sql.NVarChar(20), model || "NULL");
-    request.input("colorCode", sql.NVarChar(10), colorCode || "NULL");
-    request.input("serialCode", sql.NVarChar(15), serialCode || "NULL");
+    request.input("model", sql.NVarChar(20), model || null);
+    request.input("colorCode", sql.NVarChar(10), colorCode || null);
+    request.input("serialCode", sql.NVarChar(15), serialCode || null);
     request.input("warrantyDueDate", sql.Date, warrantyDueDate || null);
     request.input(
       "physicalCondition",
       sql.NVarChar(100),
-      physicalCondition || "NULL"
+      physicalCondition || null
     );
     request.input("proofOfPurchase", sql.Bit, proofOfPurchase || 0);
     // Customer
-    request.input("firstName", sql.NVarChar(50), firstName || "NULL");
-    request.input("lastName", sql.NVarChar(50), lastName || "NULL");
-    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || "NULL");
-    request.input("streetName", sql.NVarChar(50), streetName || "NULL");
-    request.input("streetNumber", sql.NVarChar(50), streetNumber || "NULL");
-    request.input("city", sql.NVarChar(50), city || "NULL");
-    request.input("county", sql.NVarChar(50), county || "NULL");
-    request.input("zipcode", sql.NVarChar(10), zipcode || "NULL");
+    request.input("firstName", sql.NVarChar(50), firstName || null);
+    request.input("lastName", sql.NVarChar(50), lastName || null);
+    request.input("phoneNumber", sql.NVarChar(20), phoneNumber || null);
+    request.input("streetName", sql.NVarChar(50), streetName || null);
+    request.input("streetNumber", sql.NVarChar(50), streetNumber || null);
+    request.input("city", sql.NVarChar(50), city || null);
+    request.input("county", sql.NVarChar(50), county || null);
+    request.input("zipcode", sql.NVarChar(10), zipcode || null);
     //Case
     request.input("caseType", sql.TinyInt, caseType || null);
     request.input("caseCategory", sql.TinyInt, caseCategory || null);
