@@ -10,6 +10,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { DownArrowIcon } from "../../../components/Icons";
+import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
+
 const DownArrow = () => {
   return (
     <DownArrowIcon
@@ -100,7 +103,13 @@ const schema = yup.object().shape({
 
 export default function CreateRepairment() {
   const [cases, setCases] = useState();
-  const user = null;
+  const [postError, setPostError] = useState(false);
+
+  const router = useRouter();
+
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   const { handleSubmit, handleChange, setFieldValue, errors, values } = useFormik({
     initialValues: {
       deviceID: "",
@@ -129,7 +138,30 @@ export default function CreateRepairment() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      const sendData = ({ ...values, employeeID: user.ID });
+
+      fetch('http://localhost:5000/api/repairments/insert', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sendData),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            console.log(JSON.stringify(data));
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            router.push("/success");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+          setPostError(true);
+        });
     },
   });
 
@@ -183,7 +215,6 @@ export default function CreateRepairment() {
                 <Input
                   name="serialCode"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -199,7 +230,6 @@ export default function CreateRepairment() {
                 <Input
                   name="physicalCondition"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
                   error={errors.phone}
                   border
@@ -410,6 +440,11 @@ export default function CreateRepairment() {
           {errors.remark && (
             <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
               {errors.remark}
+            </p>
+          )}
+          {postError && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              Some error occurs when creating new repairtment!
             </p>
           )}
           <div className={styles.buttons}>

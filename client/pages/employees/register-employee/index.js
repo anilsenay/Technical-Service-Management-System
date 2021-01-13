@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./register.module.scss";
 
@@ -9,18 +9,20 @@ import Button from "../../../components/Button";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import md5 from "md5";
+import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
-  name: yup
+  firstName: yup
     .string()
     .required("* Name is required.")
     .min(2, "* Name is too short"),
-  surname: yup
+  lastName: yup
     .string()
     .required("* Surname is required.")
     .min(2, "* Surname is too short"),
   email: yup.string().email().required("* Email is required."),
-  phone: yup
+  phoneNumber: yup
     .string()
     .required("* Phone Number is required.")
     .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g, {
@@ -52,13 +54,19 @@ const schema = yup.object().shape({
 });
 
 export default function RegisterEmployee() {
-  const user = null;
+  const [postError, setPostError] = useState(false);
+
+  const router = useRouter();
+
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      phone: "",
+      phoneNumber: "",
       username: "",
       password: "",
       address: "",
@@ -68,7 +76,30 @@ export default function RegisterEmployee() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log({ ...values, password: md5(values.password) });
+      const sendData = ({ ...values, password: md5(values.password), employeeID: user.ID });
+
+      fetch('http://localhost:5000/api/employees/insert', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sendData),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            router.push("/success");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+          setPostError(true);
+        });
+
     },
   });
   return (
@@ -81,10 +112,10 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Name</span>
                 <Input
-                  name="name"
+                  name="firstName"
                   onChange={handleChange}
                   noMargin
-                  error={errors.name}
+                  error={errors.firstName}
                   border
                   smallSize
                 />
@@ -92,10 +123,10 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Surname</span>
                 <Input
-                  name="surname"
+                  name="lastName"
                   onChange={handleChange}
                   noMargin
-                  error={errors.surname}
+                  error={errors.lastName}
                   border
                   smallSize
                 />
@@ -103,10 +134,10 @@ export default function RegisterEmployee() {
               <div className={styles.inputContainer}>
                 <span>Phone Number</span>
                 <Input
-                  name="phone"
+                  name="phoneNumber"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.phoneNumber}
                   border
                   smallSize
                 />
@@ -183,14 +214,14 @@ export default function RegisterEmployee() {
                 <div className={styles.seperator} />
               </div>
 
-              {errors.name && (
+              {errors.firstName && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.name}
+                  {errors.firstName}
                 </p>
               )}
-              {errors.surname && (
+              {errors.lastName && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.surname}
+                  {errors.lastName}
                 </p>
               )}
               {errors.email && (
@@ -198,9 +229,9 @@ export default function RegisterEmployee() {
                   {errors.email}
                 </p>
               )}
-              {errors.phone && (
+              {errors.phoneNumber && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.phone}
+                  {errors.phoneNumber}
                 </p>
               )}
               {errors.username && (
@@ -235,7 +266,11 @@ export default function RegisterEmployee() {
               )}
             </div>
           </div>
-
+          {postError && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              Some error occurs when creating new repairtment!
+            </p>
+          )}
           <Button type="submit" name="update_button" value="Update">
             Register New Employee
             </Button>

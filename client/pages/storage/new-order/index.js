@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./new-order.module.scss";
 
@@ -8,6 +8,8 @@ import Button from "../../../components/Button";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
+import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
   partID_1: yup
@@ -22,7 +24,13 @@ const schema = yup.object().shape({
 });
 
 export default function NewOrder() {
-  const user = null;
+  const [postError, setPostError] = useState(false);
+
+  const router = useRouter();
+
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
       partID_1: "",
@@ -48,7 +56,29 @@ export default function NewOrder() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      const sendData = ({ ...values, employeeID: user.ID });
+
+      fetch('http://localhost:5000/api/orders/insert', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sendData),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            router.push("/success");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+          setPostError(true);
+        });
     },
   });
   return (
@@ -63,9 +93,8 @@ export default function NewOrder() {
                 <Input
                   name="partID_1"
                   onChange={handleChange}
-                  defaultValue={user?.phoneNumber}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_1}
                   border
                   smallSize
                 />
@@ -76,7 +105,7 @@ export default function NewOrder() {
                   name="partID_1_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_1_quantity}
                   border
                   smallSize
                 />
@@ -87,7 +116,7 @@ export default function NewOrder() {
                   name="partID_2"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_2}
                   border
                   smallSize
                 />
@@ -98,7 +127,7 @@ export default function NewOrder() {
                   name="partID_2_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_2_quantity}
                   border
                   smallSize
                 />
@@ -109,7 +138,7 @@ export default function NewOrder() {
                   name="partID_3"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_3}
                   border
                   smallSize
                 />
@@ -119,7 +148,7 @@ export default function NewOrder() {
                   name="partID_3_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_3_quantity}
                   border
                   smallSize
                 />
@@ -130,7 +159,7 @@ export default function NewOrder() {
                   name="partID_4"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_4}
                   border
                   smallSize
                 />
@@ -141,7 +170,7 @@ export default function NewOrder() {
                   name="partID_4_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_4_quantity}
                   border
                   smallSize
                 />
@@ -152,7 +181,7 @@ export default function NewOrder() {
                   name="partID_5"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_5}
                   border
                   smallSize
                 />
@@ -163,7 +192,7 @@ export default function NewOrder() {
                   name="partID_5_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_5_quantity}
                   border
                   smallSize
                 />
@@ -174,7 +203,7 @@ export default function NewOrder() {
                   name="partID_6"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_6}
                   border
                   smallSize
                 />
@@ -185,7 +214,7 @@ export default function NewOrder() {
                   name="partID_6_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_6_quantity}
                   border
                   smallSize
                 />
@@ -196,7 +225,7 @@ export default function NewOrder() {
                   name="partID_7"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_7}
                   border
                   smallSize
                 />
@@ -207,7 +236,7 @@ export default function NewOrder() {
                   name="partID_7_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_7_quantity}
                   border
                   smallSize
                 />
@@ -218,7 +247,7 @@ export default function NewOrder() {
                   name="partID_8"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_8}
                   border
                   smallSize
                 />
@@ -229,7 +258,7 @@ export default function NewOrder() {
                   name="partID_8_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_8_quantity}
                   border
                   smallSize
                 />
@@ -240,7 +269,7 @@ export default function NewOrder() {
                   name="partID_9"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_9}
                   border
                   smallSize
                 />
@@ -251,7 +280,7 @@ export default function NewOrder() {
                   name="partID_9_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_9_quantity}
                   border
                   smallSize
                 />
@@ -262,7 +291,7 @@ export default function NewOrder() {
                   name="partID_10"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_10}
                   border
                   smallSize
                 />
@@ -273,7 +302,7 @@ export default function NewOrder() {
                   name="partID_10_quantity"
                   onChange={handleChange}
                   noMargin
-                  error={errors.phone}
+                  error={errors.partID_10_quantity}
                   border
                   smallSize
                 />
@@ -291,7 +320,11 @@ export default function NewOrder() {
 
             </div>
           </div>
-
+          {postError && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              Some error occurs when creating new repairtment!
+            </p>
+          )}
           <Button type="submit" name="create_button" value="Create">
             Create New Order
             </Button>

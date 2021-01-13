@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./new-part.module.scss";
 
@@ -8,6 +8,8 @@ import Button from "../../../components/Button";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
+import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
   partID: yup
@@ -27,7 +29,7 @@ const schema = yup.object().shape({
   partPrice: yup
     .number()
     .required("* Part Price is required"),
-  partQuantity: yup
+  quantity: yup
     .number()
     .required("* Part Quantity is required"),
   boxNumber: yup
@@ -37,7 +39,13 @@ const schema = yup.object().shape({
 });
 
 export default function AddPart() {
-  const user = null;
+  const [postError, setPostError] = useState(false);
+
+  const router = useRouter();
+
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
       partID: "",
@@ -45,12 +53,34 @@ export default function AddPart() {
       partModel: "",
       partColor: null,
       partPrice: 0,
-      partQuantity: 0,
+      quantity: 0,
       boxNumber: null,
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      const sendData = ({ ...values, employeeID: user.ID });
+
+      fetch('http://localhost:5000/api/storage/insertNewPart', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sendData),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            router.push("/success");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+          setPostError(true);
+        });
     },
   });
   return (
@@ -120,11 +150,11 @@ export default function AddPart() {
               <div className={styles.inputContainer}>
                 <span>Part Quantity</span>
                 <Input
-                  name="partQuantity"
+                  name="quantity"
                   defaultValue={0}
                   onChange={handleChange}
                   noMargin
-                  error={errors.partQuantity}
+                  error={errors.quantity}
                   border
                   smallSize
                 />
@@ -168,9 +198,9 @@ export default function AddPart() {
                   {errors.partPrice}
                 </p>
               )}
-              {errors.partQuantity && (
+              {errors.quantity && (
                 <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
-                  {errors.partQuantity}
+                  {errors.quantity}
                 </p>
               )}
               {errors.boxNumber && (
@@ -180,7 +210,11 @@ export default function AddPart() {
               )}
             </div>
           </div>
-
+          {postError && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              Some error occurs when creating new repairtment!
+            </p>
+          )}
           <Button type="submit" name="create-button" value="Create">
             Add New Part
             </Button>

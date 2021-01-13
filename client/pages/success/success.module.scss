@@ -1,0 +1,10 @@
+@import "../../styles/colors.scss";
+
+.button {
+    background-color: black;
+    color: white;
+    padding: 12px;
+    width: fit-content;
+    border-radius: 10px;
+    cursor: pointer;
+}

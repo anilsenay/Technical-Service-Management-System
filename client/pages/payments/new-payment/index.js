@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./new-payment.module.scss";
 
@@ -10,6 +10,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { DownArrowIcon } from "../../../components/Icons";
+import globalHook from "../../../hooks/global.hook";
+import { useRouter } from "next/router";
 const DownArrow = () => {
   return (
     <DownArrowIcon
@@ -40,7 +42,12 @@ const schema = yup.object().shape({
 });
 
 export default function NewPayment() {
-  const user = null;
+  const [postError, setPostError] = useState(false);
+  const router = useRouter();
+
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
       repairmentID: "",
@@ -49,7 +56,29 @@ export default function NewPayment() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      const sendData = ({ ...values, accountantID: user.ID });
+
+      fetch('http://localhost:5000/api/payments/insert', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sendData),
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+          if (!response.ok) {
+            const error = (data && data.error) || response.status;
+            throw new Error(data.error);
+          }
+          if (response.ok && data) {
+            console.log(data)
+            router.push("/success");
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+          setPostError(true);
+        });
     },
   });
   return (
@@ -111,7 +140,11 @@ export default function NewPayment() {
               )}
             </div>
           </div>
-
+          {postError && (
+            <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
+              Some error occurs when creating new payment!
+            </p>
+          )}
           <Button type="submit" name="update_button" value="Update">
             Create New Payment
             </Button>
