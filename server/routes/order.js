@@ -79,41 +79,45 @@ router.get("/getOrderedParts/:orderID", (req, res) => {
         return res.status(400).send({ error: { err } });
       }
       item = result.recordsets[0][0];
-      request.query("SELECT p.* FROM ORDERED_PART op inner join PART p on op.partID=p.ID WHERE op.orderID=" + req.params.orderID, (err, recordsets) => {
-        if (err) {
-          console.log(err);
-          if (err.code === "ENOCONN")
-            return res.status(503).send({ error: { err } });
-          return res.status(400).send({ error: { err } });
-        }
-        const parts = recordsets.recordset;
+      request.query(
+        "SELECT p.* FROM ORDERED_PART op inner join PART p on op.partID=p.ID WHERE op.orderID=" +
+          req.params.orderID,
+        (err, recordsets) => {
+          if (err) {
+            console.log(err);
+            if (err.code === "ENOCONN")
+              return res.status(503).send({ error: { err } });
+            return res.status(400).send({ error: { err } });
+          }
+          const parts = recordsets.recordset;
 
-        res.setHeader("Content-Type", "application/json");
-        sql.close();
-        const item = result.recordsets[0][0];
-        const allJson = {
-          orderID: item.orderID,
-          totalCost: item.totalCost,
-          orderDate: item.orderDate,
-          isConfirmed: item.isConfirmed,
-          isInWarranty: item.isInWarranty,
-          employee: {
-            employeeID: item.ID,
-            firstName: item.firstName,
-            lastName: item.lastName,
-            username: item.username,
-            email: item.email,
-            isManager: item.isManager,
-            isSmartService: item.isSmartService,
-            isTechnician: item.isTechnician,
-            isStorageMan: item.isStorageMan,
-            isTester: item.isTester,
-            isAccountant: item.isAccountant,
-          },
-          parts: parts
-        };
-        return res.status(200).send({ detailedOrder: allJson }); // Result in JSON format
-      });
+          res.setHeader("Content-Type", "application/json");
+          sql.close();
+          const item = result.recordsets[0][0];
+          const allJson = {
+            orderID: item.orderID,
+            totalCost: item.totalCost,
+            orderDate: item.orderDate,
+            isConfirmed: item.isConfirmed,
+            isInWarranty: item.isInWarranty,
+            employee: {
+              employeeID: item.ID,
+              firstName: item.firstName,
+              lastName: item.lastName,
+              username: item.username,
+              email: item.email,
+              isManager: item.isManager,
+              isSmartService: item.isSmartService,
+              isTechnician: item.isTechnician,
+              isStorageMan: item.isStorageMan,
+              isTester: item.isTester,
+              isAccountant: item.isAccountant,
+            },
+            parts: parts,
+          };
+          return res.status(200).send({ detailedOrder: allJson }); // Result in JSON format
+        }
+      );
     });
   });
 });
@@ -229,7 +233,6 @@ router.post("/insert", (req, res) => {
 });
 
 router.put("/updateConfirm", (req, res) => {
-  console.log("update confirm")
   var confirm = req.body.isConfirmed;
   var orderID = req.body.orderID;
   sql.connect(sqlConfig, () => {
