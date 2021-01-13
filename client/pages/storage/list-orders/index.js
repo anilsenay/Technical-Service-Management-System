@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CollapsibleList from "../../../components/CollapsibleList";
 import ListItem from "../../../components/CollapsibleList/ListItem";
 import Layout from "../../../components/Layout";
@@ -6,7 +6,10 @@ import Layout from "../../../components/Layout";
 import { format } from 'date-fns'
 import FilterBar from "../../../components/CollapsibleList/FilterBar";
 
+import styles from './list.module.scss';
+
 export default function ListOrders({ data }) {
+  const [orderedParts, setOrderedParts] = useState([]);
   const columns = ["ID",
     "Order Date",
     "Employee",
@@ -14,7 +17,12 @@ export default function ListOrders({ data }) {
     "Confirmed",
   ];
   const columnSizes = [0.5, 1.7, 2, 1.2, 1.5];
-  console.log(data);
+
+  useEffect(async () => {
+    const res = await fetch('http://localhost:5000/api/orders/getOrderedParts')
+    const json = await res.json().then(data => setOrderedParts(data.orders))
+  }, [])
+  console.log(orderedParts)
   return (
     <Layout>
       <FilterBar size={data?.length || 0} />
@@ -30,8 +38,21 @@ export default function ListOrders({ data }) {
                 <ListItem.Item>{item.isConfirmed ? "Yes" : "No"}</ListItem.Item>
               </ListItem.Columns>
               <ListItem.Content>
-                <div >
-
+                <div className={styles.content}>
+                  <ListItem.ContentHeader text="Ordered Parts" />
+                  {orderedParts?.map(part => {
+                    if (part.orderID === item.orderID)
+                      return (
+                        <>
+                          {<p><span>Part ID:</span>{part.partID}</p>}
+                          {<p><span>Part Name:</span>{part.partName}</p>}
+                          {<p><span>Part Model:</span>{part.partModel}</p>}
+                          {<p><span>Part Price:</span>{part.price}</p>}
+                          {<p><span>Quantity:</span>{part.quantity}</p>}
+                          <hr />
+                        </>
+                      )
+                  })}
                 </div>
               </ListItem.Content>
             </ListItem>
