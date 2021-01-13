@@ -167,8 +167,6 @@ router.get("/:id", (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-=======
 // Update the repairment's information.
 router.put("/update", (req, res) => {
   var repairmentID = req.body.repairmentID;
@@ -203,7 +201,6 @@ router.put("/update", (req, res) => {
   });
 });
 
->>>>>>> 4cc6bced0724ec97fd7f59f688d00fd29a16308e
 // Get the repairment's related information with given id parameter.
 router.get("/info/:id", (req, res) => {
   sql.connect(sqlConfig, () => {
