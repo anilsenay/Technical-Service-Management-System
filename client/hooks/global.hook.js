@@ -18,7 +18,7 @@ const globalHook = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password: md5(password) }),
     };
-    fetch("http://localhost:5000/api/login", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         console.log(response);
@@ -28,7 +28,8 @@ const globalHook = () => {
         }
         console.log(data.user);
         if (response.ok && data.user) {
-          typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify(data.user));
+          typeof window !== "undefined" &&
+            localStorage.setItem("user", JSON.stringify(data.user));
           globalDispatch({
             type: "SET_USER_ERROR",
             payload: null,
@@ -49,12 +50,12 @@ const globalHook = () => {
   };
 
   const logout = () => {
-    typeof window !== 'undefined' && localStorage.removeItem('user');
+    typeof window !== "undefined" && localStorage.removeItem("user");
     globalDispatch({
       type: "SET_LOGGED_USER",
       payload: null,
     });
-  }
+  };
 
   return {
     useGlobalState,
@@ -62,7 +63,5 @@ const globalHook = () => {
     logout,
   };
 };
-
-
 
 export default globalHook;

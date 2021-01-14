@@ -70,8 +70,7 @@ const schema = yup.object().shape({
     .string()
     .required("* Customer Name is required.")
     .min(2, "* Customer Name is too short"),
-  streetNumber: yup
-    .string(),
+  streetNumber: yup.string(),
   city: yup
     .string()
     .required("* City is required.")
@@ -80,19 +79,20 @@ const schema = yup.object().shape({
     .string()
     .required("* Country is required.")
     .min(2, "* Country is too short"),
-  zipcode: yup
-    .string(),
+  zipcode: yup.string(),
   type: yup
-    .number().required("* You must select case details correctly!")
+    .number()
+    .required("* You must select case details correctly!")
     .typeError("* You must select case details correctly!"),
   category: yup
-    .number().required("* You must select case details correctly!")
+    .number()
+    .required("* You must select case details correctly!")
     .typeError("* You must select case details correctly!"),
   specification: yup
-    .number().required("* You must select case details correctly!")
+    .number()
+    .required("* You must select case details correctly!")
     .typeError("* You must select case details correctly!"),
-  solution: yup
-    .string(),
+  solution: yup.string(),
   description: yup
     .string()
     .required("* Description is required.")
@@ -113,7 +113,13 @@ export default function CreateRepairment() {
   const { useGlobalState } = globalHook();
   const { user } = useGlobalState();
 
-  const { handleSubmit, handleChange, setFieldValue, errors, values } = useFormik({
+  const {
+    handleSubmit,
+    handleChange,
+    setFieldValue,
+    errors,
+    values,
+  } = useFormik({
     initialValues: {
       deviceID: "",
       model: "",
@@ -141,9 +147,9 @@ export default function CreateRepairment() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, employeeID: user.ID });
+      const sendData = { ...values, employeeID: user.ID };
 
-      fetch('http://localhost:5000/api/repairments/insert', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/repairments/insert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -157,7 +163,7 @@ export default function CreateRepairment() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -169,10 +175,12 @@ export default function CreateRepairment() {
   });
 
   useEffect(async () => {
-    const res = await fetch('http://localhost:5000/api/cases/info')
-    const json = await res.json().then(data => setCases(data))
-  }, [])
-  console.log(values.type, values.category, values.specification)
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cases/info`
+    );
+    const json = await res.json().then((data) => setCases(data));
+  }, []);
+  console.log(values.type, values.category, values.specification);
   return (
     <Layout title="Create Repairment">
       <main className={styles.container}>
@@ -226,7 +234,13 @@ export default function CreateRepairment() {
               </div>
               <div className={styles.inputContainer}>
                 <span>Warranty Due Date</span>
-                <input type="date" id="warrantyDueDate" name="warrantyDueDate" className={styles.input} onChange={handleChange} />
+                <input
+                  type="date"
+                  id="warrantyDueDate"
+                  name="warrantyDueDate"
+                  className={styles.input}
+                  onChange={handleChange}
+                />
               </div>
               <div className={styles.inputContainer}>
                 <span>Physical Condition</span>
@@ -241,11 +255,21 @@ export default function CreateRepairment() {
               </div>
               <div className={styles.inputContainer}>
                 <span>Proof Of Purchase</span>
-                <input type="checkbox" className={styles.checkbox} name="proofOfPurchase" onChange={handleChange} />
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  name="proofOfPurchase"
+                  onChange={handleChange}
+                />
               </div>
               <div className={styles.inputContainer}>
                 <span>Is in warranty</span>
-                <input type="checkbox" className={styles.checkbox} name="isInWarranty" onChange={handleChange} />
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  name="isInWarranty"
+                  onChange={handleChange}
+                />
               </div>
 
               {errors.deviceID && (
@@ -386,8 +410,12 @@ export default function CreateRepairment() {
               <div className={styles.selectContainer}>
                 <select id="type" name="type" onChange={handleChange}>
                   <option value={null}>Select a type</option>
-                  {cases?.types?.map(item => {
-                    return <option value={+item.ID} key={item.ID}>{item.type}</option>
+                  {cases?.types?.map((item) => {
+                    return (
+                      <option value={+item.ID} key={item.ID}>
+                        {item.type}
+                      </option>
+                    );
                   })}
                 </select>
                 <DownArrow />
@@ -398,8 +426,14 @@ export default function CreateRepairment() {
               <div className={styles.selectContainer}>
                 <select id="category" name="category" onChange={handleChange}>
                   <option value={null}>Select a category</option>
-                  {cases?.categories?.map(item => {
-                    return values.type == item.caseType && <option value={+item.ID} key={item.ID}>{item.category}</option>
+                  {cases?.categories?.map((item) => {
+                    return (
+                      values.type == item.caseType && (
+                        <option value={+item.ID} key={item.ID}>
+                          {item.category}
+                        </option>
+                      )
+                    );
                   })}
                 </select>
                 <DownArrow />
@@ -408,10 +442,20 @@ export default function CreateRepairment() {
             <div className={styles.case}>
               <label>Case Specification</label>
               <div className={styles.selectContainer}>
-                <select id="specification" name="specification" onChange={handleChange} >
-                  <option value={null} >Select a specification</option>
-                  {cases?.specifications?.map(item => {
-                    return values.category == item.caseCategory && <option value={+item.ID} key={item.ID}>{item.specification}</option>
+                <select
+                  id="specification"
+                  name="specification"
+                  onChange={handleChange}
+                >
+                  <option value={null}>Select a specification</option>
+                  {cases?.specifications?.map((item) => {
+                    return (
+                      values.category == item.caseCategory && (
+                        <option value={+item.ID} key={item.ID}>
+                          {item.specification}
+                        </option>
+                      )
+                    );
                   })}
                 </select>
                 <DownArrow />
@@ -460,16 +504,26 @@ export default function CreateRepairment() {
             </p>
           )}
           <div className={styles.buttons}>
-            <Button type="button" name="create_button" value="create" onClick={() => {
-              setFieldValue('isTech', false);
-              handleSubmit();
-            }}>
+            <Button
+              type="button"
+              name="create_button"
+              value="create"
+              onClick={() => {
+                setFieldValue("isTech", false);
+                handleSubmit();
+              }}
+            >
               Create Repairment
             </Button>
-            <Button type="submit" name="assign_button" value="assign" onClick={() => {
-              setFieldValue('isTech', true);
-              handleSubmit();
-            }}>
+            <Button
+              type="submit"
+              name="assign_button"
+              value="assign"
+              onClick={() => {
+                setFieldValue("isTech", true);
+                handleSubmit();
+              }}
+            >
               Assign Repairment
             </Button>
           </div>

@@ -41,12 +41,8 @@ const schema = yup.object().shape({
     .string()
     .required("* Address is required.")
     .min(2, "* Address is too short"),
-  dateOfBirth: yup
-    .date()
-    .required("* Date Of Birth is required."),
-  startDate: yup
-    .date()
-    .required("* Start Date is required."),
+  dateOfBirth: yup.date().required("* Date Of Birth is required."),
+  startDate: yup.date().required("* Start Date is required."),
   type: yup
     .string()
     .required("* Type is required.")
@@ -76,9 +72,13 @@ export default function RegisterEmployee() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, password: md5(values.password), employeeID: user.ID });
+      const sendData = {
+        ...values,
+        password: md5(values.password),
+        employeeID: user.ID,
+      };
 
-      fetch('http://localhost:5000/api/employees/insert', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employees/insert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -91,7 +91,7 @@ export default function RegisterEmployee() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -99,7 +99,6 @@ export default function RegisterEmployee() {
           console.log(e.toString());
           setPostError(true);
         });
-
     },
   });
   return (
@@ -192,12 +191,22 @@ export default function RegisterEmployee() {
               </div>
               <div className={styles.inputContainer}>
                 <span>Date Of Birth</span>
-                <input type="date" id="dateOfBirth" name="dateOfBirth" onChange={handleChange} />
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  onChange={handleChange}
+                />
                 <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
                 <span>Start Date</span>
-                <input type="date" id="startDate" name="startDate" onChange={handleChange} />
+                <input
+                  type="date"
+                  id="startDate"
+                  name="startDate"
+                  onChange={handleChange}
+                />
                 <div className={styles.seperator} />
               </div>
               <div className={styles.inputContainer}>
@@ -273,8 +282,7 @@ export default function RegisterEmployee() {
           )}
           <Button type="submit" name="update_button" value="Update">
             Register New Employee
-            </Button>
-
+          </Button>
         </form>
       </main>
     </Layout>

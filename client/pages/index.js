@@ -3,6 +3,7 @@ import LoginForm from "../components/LoginForm";
 import styles from "../styles/login.module.scss";
 
 export default function Home() {
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   return (
     <div className={styles.container}>
       <Head>

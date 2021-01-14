@@ -20,7 +20,6 @@ const schema = yup.object().shape({
     .number()
     .required("* You must order at least 1 piece")
     .min(1, "* You must order at least 1 piece"),
-
 });
 
 export default function NewOrder() {
@@ -56,9 +55,9 @@ export default function NewOrder() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, employeeID: user.ID });
+      const sendData = { ...values, employeeID: user.ID };
 
-      fetch('http://localhost:5000/api/orders/insert', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/insert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -71,7 +70,7 @@ export default function NewOrder() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -317,7 +316,6 @@ export default function NewOrder() {
                   {errors.partID_1_quantity}
                 </p>
               )}
-
             </div>
           </div>
           {postError && (
@@ -327,8 +325,7 @@ export default function NewOrder() {
           )}
           <Button type="submit" name="create_button" value="Create">
             Create New Order
-            </Button>
-
+          </Button>
         </form>
       </main>
     </Layout>

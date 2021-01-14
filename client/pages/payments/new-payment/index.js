@@ -56,9 +56,9 @@ export default function NewPayment() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, accountantID: user.ID });
+      const sendData = { ...values, accountantID: user.ID };
 
-      fetch('http://localhost:5000/api/payments/insert', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/insert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -71,7 +71,7 @@ export default function NewPayment() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -113,7 +113,11 @@ export default function NewPayment() {
               <div className={styles.inputContainer}>
                 <span>Payment Method</span>
                 <div className={styles.selectContainer}>
-                  <select id="paymentMethod" name="paymentMethod" onChange={handleChange}>
+                  <select
+                    id="paymentMethod"
+                    name="paymentMethod"
+                    onChange={handleChange}
+                  >
                     <option value={1}>Nakit</option>
                     <option value={2}>Kredi Kartı</option>
                     <option value={3}>Mobil Ödeme</option>
@@ -147,8 +151,7 @@ export default function NewPayment() {
           )}
           <Button type="submit" name="update_button" value="Update">
             Create New Payment
-            </Button>
-
+          </Button>
         </form>
       </main>
     </Layout>

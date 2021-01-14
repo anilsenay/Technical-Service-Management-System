@@ -44,10 +44,16 @@ export default function UpdateAccount() {
     validationSchema: schema,
     onSubmit: (values) => {
       console.log(values);
-      fetch('http://localhost:5000/api/employees/update', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employees/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user.username, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }),
+        body: JSON.stringify({
+          username: user.username,
+          firstName: values.name,
+          lastName: values.surname,
+          email: values.email,
+          phoneNumber: values.phone,
+        }),
       })
         .then(async (response) => {
           const data = await response.json();
@@ -57,8 +63,18 @@ export default function UpdateAccount() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
-            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...user, firstName: values.name, lastName: values.surname, email: values.email, phoneNumber: values.phone }));
+            console.log(data);
+            typeof window !== "undefined" &&
+              localStorage.setItem(
+                "user",
+                JSON.stringify({
+                  ...user,
+                  firstName: values.name,
+                  lastName: values.surname,
+                  email: values.email,
+                  phoneNumber: values.phone,
+                })
+              );
             router.push("");
           }
         })

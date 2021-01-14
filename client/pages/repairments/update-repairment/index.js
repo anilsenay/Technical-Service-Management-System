@@ -33,17 +33,17 @@ const DownArrow = () => {
 const schema = yup.object().shape({
   partIDNeedChange: yup
     .number()
-    .typeError("* Part ID must be include only number").nullable(),
-  value: yup.number()
+    .typeError("* Part ID must be include only number")
+    .nullable(),
+  value: yup
+    .number()
     .typeError("* Part ID must be include only number")
     .min(0, "* Part ID must be 0, 1, 2 or 3")
     .max(3, "* Part ID must be 0, 1, 2 or 3"),
   isPartWaited: yup.boolean(),
   isEnd: yup.boolean(),
   isInWarranty: yup.boolean(),
-  remark: yup
-    .string()
-    .min(3, "* Remark must be min 3 words"),
+  remark: yup.string().min(3, "* Remark must be min 3 words"),
 });
 
 function UpdateRepairment(props) {
@@ -53,20 +53,33 @@ function UpdateRepairment(props) {
 
   const { useGlobalState } = globalHook();
   const { user } = useGlobalState();
-  const { handleSubmit, handleChange, setFieldValue, errors, values } = useFormik({
+  const {
+    handleSubmit,
+    handleChange,
+    setFieldValue,
+    errors,
+    values,
+  } = useFormik({
     initialValues: {
       partIDNeedChange: null,
       value: 0,
       isPartWaited: false,
       isEnd: !!props.router.query.endDate || false,
       isInWarranty: false,
-      remark: props.router.query.remark || "Sorun görülmemiştir. Genel bakımlar yapılmıştır.",
+      remark:
+        props.router.query.remark ||
+        "Sorun görülmemiştir. Genel bakımlar yapılmıştır.",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, employeeID: user.ID || props.router.query.employeeID, repairmentID: props.router.query.repairmentID, repairmentEndDate: values.isEnd && new Date() });
+      const sendData = {
+        ...values,
+        employeeID: user.ID || props.router.query.employeeID,
+        repairmentID: props.router.query.repairmentID,
+        repairmentEndDate: values.isEnd && new Date(),
+      };
 
-      fetch('http://localhost:5000/api/repairments/update', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/repairments/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -80,7 +93,7 @@ function UpdateRepairment(props) {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -90,8 +103,7 @@ function UpdateRepairment(props) {
         });
     },
   });
-  console.log(!!props.router.query.endDate)
-
+  console.log(!!props.router.query.endDate);
 
   return (
     <Layout title="Update Repairment">
@@ -124,15 +136,31 @@ function UpdateRepairment(props) {
               </div>
               <div className={styles.inputContainer}>
                 <span>Is Part Waited</span>
-                <input type="checkbox" className={styles.checkbox} name="isPartWaited" onChange={handleChange} />
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  name="isPartWaited"
+                  onChange={handleChange}
+                />
               </div>
               <div className={styles.inputContainer}>
                 <span>Is In Warranty</span>
-                <input type="checkbox" className={styles.checkbox} name="isInWarranty" onChange={handleChange} />
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  name="isInWarranty"
+                  onChange={handleChange}
+                />
               </div>
               <div className={styles.inputContainer}>
                 <span>End Repairment</span>
-                <input type="checkbox" className={styles.checkbox} name="isEnd" onChange={handleChange} defaultValue={!!props.router.query.endDate} />
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  name="isEnd"
+                  onChange={handleChange}
+                  defaultValue={!!props.router.query.endDate}
+                />
               </div>
 
               {errors.partIDNeedChange && (
@@ -149,7 +177,15 @@ function UpdateRepairment(props) {
           </div>
           <h4>Remark</h4>
           <div className={styles.remark}>
-            <textarea name="remark" cols="2" onChange={handleChange} defaultValue={props.router.query.remark || "Sorun görülmemiştir. Genel bakımlar yapılmıştır."} />
+            <textarea
+              name="remark"
+              cols="2"
+              onChange={handleChange}
+              defaultValue={
+                props.router.query.remark ||
+                "Sorun görülmemiştir. Genel bakımlar yapılmıştır."
+              }
+            />
           </div>
           {errors.remark && (
             <p style={{ color: "red", marginTop: 4, fontSize: 14 }}>
@@ -163,9 +199,14 @@ function UpdateRepairment(props) {
             </p>
           )}
           <div className={styles.buttons}>
-            <Button type="button" name="create_button" value="create" onClick={() => {
-              handleSubmit();
-            }}>
+            <Button
+              type="button"
+              name="create_button"
+              value="create"
+              onClick={() => {
+                handleSubmit();
+              }}
+            >
               Update Repairment
             </Button>
           </div>
@@ -175,4 +216,4 @@ function UpdateRepairment(props) {
   );
 }
 
-export default withRouter(UpdateRepairment)
+export default withRouter(UpdateRepairment);

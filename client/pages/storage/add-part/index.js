@@ -24,18 +24,13 @@ const schema = yup.object().shape({
     .string()
     .required("* Part Model is required")
     .min(1, "* Part Model is too short"),
-  partColor: yup
-    .string().nullable(),
-  partPrice: yup
-    .number()
-    .required("* Part Price is required"),
-  quantity: yup
-    .number()
-    .required("* Part Quantity is required"),
+  partColor: yup.string().nullable(),
+  partPrice: yup.number().required("* Part Price is required"),
+  quantity: yup.number().required("* Part Quantity is required"),
   boxNumber: yup
     .number()
     .required("* Box Number is required")
-    .typeError("* Box Number is required")
+    .typeError("* Box Number is required"),
 });
 
 export default function AddPart() {
@@ -58,9 +53,9 @@ export default function AddPart() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const sendData = ({ ...values, employeeID: user.ID });
+      const sendData = { ...values, employeeID: user.ID };
 
-      fetch('http://localhost:5000/api/storage/insertNewPart', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/storage/insertNewPart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),
@@ -73,7 +68,7 @@ export default function AddPart() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
+            console.log(data);
             router.push("/success");
           }
         })
@@ -217,8 +212,7 @@ export default function AddPart() {
           )}
           <Button type="submit" name="create-button" value="Create">
             Add New Part
-            </Button>
-
+          </Button>
         </form>
       </main>
     </Layout>

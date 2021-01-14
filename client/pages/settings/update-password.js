@@ -43,10 +43,14 @@ export default function UpdatePassword() {
       const currentPassword = md5(values.currentPassword);
       const newPassword = md5(values.newPassword);
       const confirmPassword = md5(values.confirmPassword);
-      fetch('http://localhost:5000/api/employees/updatePassword', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employees/updatePassword`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user?.username, oldPassword: currentPassword, newPassword }),
+        body: JSON.stringify({
+          username: user?.username,
+          oldPassword: currentPassword,
+          newPassword,
+        }),
       })
         .then(async (response) => {
           const data = await response.json();
@@ -56,8 +60,12 @@ export default function UpdatePassword() {
             throw new Error(data.error);
           }
           if (response.ok && data) {
-            console.log(data)
-            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify({ ...user, password: newPassword }));
+            console.log(data);
+            typeof window !== "undefined" &&
+              localStorage.setItem(
+                "user",
+                JSON.stringify({ ...user, password: newPassword })
+              );
             router.push("");
           }
         })
@@ -127,7 +135,9 @@ export default function UpdatePassword() {
             {passwordError}
           </p>
         )}
-        <Button type="submit" name="password_button" value="Update Password">Confirm</Button>
+        <Button type="submit" name="password_button" value="Update Password">
+          Confirm
+        </Button>
       </form>
     </div>
   );
