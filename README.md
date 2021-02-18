@@ -163,8 +163,8 @@ Distributed under the GPL License. See `LICENSE` for more information.
 
 ## Contact
 
-[@anilsenay](https://github.com/anilsenay)
-[@bilgehangecici](https://github.com/bilgehangecici)
-[@mehmetaliyuksel](https://github.com/mehmetaliyuksel)
+- [@anilsenay](https://github.com/anilsenay)
+- [@bilgehangecici](https://github.com/bilgehangecici)
+- [@mehmetaliyuksel](https://github.com/mehmetaliyuksel)
 
 Project Link: [https://github.com/anilsenay/CSE3055_Project](https://github.com/anilsenay/CSE3055_Project)
