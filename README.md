@@ -43,7 +43,9 @@
 
 ## About The Project
 
-Database project that we implemented is about managing a technical service of mobile devices and storing the repairing process information of them. This database will be used by the workers of the technical service.
+The main idea of the project is provide a wide range database system to a technical service who needs the store information about their customers, employee, repairment process and the parts being physically stored in their building etc. This business model is created in order to simplify the information storage and keep the operation of repairment work effective and quick. 
+
+Database project that we implemented is responsible for managing a technical service of mobile devices and storing the repairing process information of them. This database will be used by the workers of the technical service.
 
 ### Built With
 ##### Front-End
