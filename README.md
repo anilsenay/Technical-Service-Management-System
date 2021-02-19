@@ -43,7 +43,7 @@
 
 ## About The Project
 
-Description
+Database project that we implemented is about managing a technical service of mobile devices and storing the repairing process information of them. This database will be used by the workers of the technical service.
 
 ### Built With
 ##### Front-End
