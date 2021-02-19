@@ -8,7 +8,7 @@
   <h3 align="center">CSE 3055 Project - Technical Service Database & Interface</h3>
 
   <p align="center">
-    Short Description Here
+    A technical service management system app built with React, NextJS, NodeJS, ExpressJS, MSSQL and Microsoft Azure Database 
     <br />
     <br />
   </p>
@@ -55,6 +55,7 @@ Description
 - [Express](https://expressjs.com/)
 ##### Database
 - [MSSQL](https://www.microsoft.com/tr-tr/sql-server/sql-server-2019)
+- [Microsoft Azure Database](https://azure.microsoft.com/en-us/services/sql-database/)
 <!-- Screens -->
 
 ## Screenshots
