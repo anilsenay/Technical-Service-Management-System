@@ -8,7 +8,7 @@
   <h3 align="center">CSE 3055 Project - Technical Service Database & Interface</h3>
 
   <p align="center">
-    A technical service management system built with React, NextJS, NodeJS, ExpressJS, MSSQL and Microsoft Azure Database 
+    A technical service management system built with React, NextJS, NodeJS, ExpressJS and Microsoft Azure Database 
     <br />
     <br />
   </p>
