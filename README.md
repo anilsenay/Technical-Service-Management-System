@@ -152,7 +152,6 @@ npm run dev
 ## Issues
 
 - We had not provide any security for back-end, so use it only in **development**.
-- 
 
 <!-- LICENSE -->
 
