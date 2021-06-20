@@ -1,7 +1,7 @@
 
 <br />
 <p align="center">
-  <a href="https://github.com/anilsenay/next-e-commerce">
+  <a href="https://github.com/anilsenay/Technical-Service-Management-System">
     <img src="https://i.ibb.co/FK6rBtB/Ekran-G-r-nt-s-18.png" alt="Header photo" >
   </a>
 
@@ -113,8 +113,8 @@ Database project that we implemented is responsible for managing a technical ser
 2. Clone the repo and change directory
 
 ```sh
-git clone https://github.com/anilsenay/CSE3055_Project.git
-cd CSE3055_Project
+git clone https://github.com/anilsenay/Technical-Service-Management-System.git
+cd Technical-Service-Management-System
 ```
 
 3. Install NPM packages for both server and client by running this command:
@@ -169,4 +169,4 @@ Distributed under the GPL License. See `LICENSE` for more information.
 - [@bilgehangecici](https://github.com/bilgehangecici)
 - [@mehmetaliyuksel](https://github.com/mehmetaliyuksel)
 
-Project Link: [https://github.com/anilsenay/CSE3055_Project](https://github.com/anilsenay/CSE3055_Project)
+Project Link: [https://github.com/anilsenay/Technical-Service-Management-System](https://github.com/anilsenay/Technical-Service-Management-System)
